@@ -13,7 +13,7 @@ public enum SeasonState
 
 public class SeasonStateManager : MonoBehaviour
 {
-    private SeasonState currentSeason = SeasonState.Spring;
+    [SerializeField] private SeasonState currentSeason = SeasonState.Spring;
 
     public void SetSeason(SeasonState newSeason)
     {
