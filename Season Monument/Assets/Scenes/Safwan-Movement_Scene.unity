@@ -1223,11 +1223,6 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 6487114905583910286, guid: 766cd9021e29b0a44bb861c18f601eb9, type: 3}
   m_PrefabInstance: {fileID: 1693371808}
   m_PrefabAsset: {fileID: 0}
---- !u!4 &1168145302 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 3535911653293194650, guid: 766cd9021e29b0a44bb861c18f601eb9, type: 3}
-  m_PrefabInstance: {fileID: 1693371808}
-  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1168145303
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1607,6 +1602,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1639979092}
+  - component: {fileID: 1639979093}
   m_Layer: 0
   m_Name: GridManager
   m_TagString: Untagged
@@ -1630,9 +1626,20 @@ Transform:
   - {fileID: 1909756112}
   - {fileID: 1676192338}
   - {fileID: 493869631}
-  - {fileID: 1168145302}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1639979093
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1639979091}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b44c8066d780624b82ba9f19322abec, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TileManager
 --- !u!1 &1676192337
 GameObject:
   m_ObjectHideFlags: 0
@@ -1690,19 +1697,19 @@ PrefabInstance:
   serializedVersion: 2
   m_Modification:
     serializedVersion: 3
-    m_TransformParent: {fileID: 1639979092}
+    m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 3535911653293194650, guid: 766cd9021e29b0a44bb861c18f601eb9, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -31.505552
+      value: -0.03158188
       objectReference: {fileID: 0}
     - target: {fileID: 3535911653293194650, guid: 766cd9021e29b0a44bb861c18f601eb9, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.88690996
+      value: 6.05
       objectReference: {fileID: 0}
     - target: {fileID: 3535911653293194650, guid: 766cd9021e29b0a44bb861c18f601eb9, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -4.1170983
+      value: -3.6805384
       objectReference: {fileID: 0}
     - target: {fileID: 3535911653293194650, guid: 766cd9021e29b0a44bb861c18f601eb9, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2001,4 +2008,5 @@ SceneRoots:
   - {fileID: 330585546}
   - {fileID: 410087041}
   - {fileID: 832575519}
+  - {fileID: 1693371808}
   - {fileID: 1639979092}
