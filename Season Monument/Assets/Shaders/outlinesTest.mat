@@ -39,9 +39,9 @@ Material:
     m_Floats:
     - _OVERLAY: 0
     - _colorTreshold: 0.1
-    - _normalTreshold: 0.1
-    - _thickness: 5
+    - _normalTreshold: 0.01
+    - _thickness: 2
     m_Colors:
-    - _OutlineColor: {r: 0.008422892, g: 0.3437992, b: 0.6377357, a: 1}
+    - _OutlineColor: {r: 1, g: 1, b: 1, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
