@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.InputSystem;
 using UnityEngine;
 
 public class CameraController : MonoBehaviour
@@ -50,14 +51,14 @@ public class CameraController : MonoBehaviour
 
     void HandleInput()
     {
-        if (Input.GetKeyDown(KeyCode.RightArrow))
+        if (Keyboard.current.rightArrowKey.wasPressedThisFrame)
         {
             currentState = (currentState + 1) % 4;
             targetYaw = currentState * -90f;
             seasonStateManager.NextSeason();
 
         }
-        else if (Input.GetKeyDown(KeyCode.LeftArrow))
+        else if (Keyboard.current.leftArrowKey.wasPressedThisFrame)
         {
             currentState = (currentState + 3) % 4;
             targetYaw = currentState * -90f;
