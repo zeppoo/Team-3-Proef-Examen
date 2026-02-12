@@ -24,6 +24,7 @@ public class PathFinder : MonoBehaviour
 
     public void FindPath()
     {
+        
         tileQueue.Clear();
         ClearTiles();
         startTile.visited = true;

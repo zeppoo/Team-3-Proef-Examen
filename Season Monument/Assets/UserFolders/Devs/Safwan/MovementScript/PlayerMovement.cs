@@ -10,11 +10,13 @@ public class PlayerMovement : MonoBehaviour
     private PathFinder pathFinder;
     private Tile tile;
 
-    private List<Tile> currentpath = new List<Tile>();
+    private List<Tile> currentPath = new List<Tile>();
     private int currentIndex = 0;
+    private int targetIndex = 0;
     private void Start()
     {
        pathFinder = GetComponent<PathFinder>();
+        currentTile = pathFinder.startTile;
     }
     public void pointAndClick(InputAction.CallbackContext context) 
     {
@@ -24,10 +26,9 @@ public class PlayerMovement : MonoBehaviour
         if (hit.collider.CompareTag("Tile"))
         {
             selectedTile = hit.collider.GetComponent<Tile>();
-            float TopY = hit.collider.bounds.max.y + 1;
+            float topY = hit.collider.bounds.max.y + 1;
             Vector3 currentposition = selectedTile.transform.position;
             tile = selectedTile.GetComponent<Tile>();
-            pathFinder.startTile = currentTile;
             pathFinder.endTile = selectedTile;
             pathFinder.FindPath();
              while (tile.parent != null)
@@ -41,18 +42,28 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        if (currentpath == null)
+        Debug.Log(pathFinder.startTile.name);
+        bool flowControl = MovePlayer();
+        if (!flowControl)
+        {
             return;
+        }
+       
+    }
 
-        if (currentpath.Count == 0)
-            return;
+    private bool MovePlayer()
+    {
+        if (currentPath == null)
+            return false;
 
-        if (currentIndex >= currentpath.Count)
-            return;
+        if (currentPath.Count == 0)
+            return false;
 
-        Vector3 position = currentpath[currentIndex].transform.position;
+        
 
-        BoxCollider tileCollider = currentpath[currentIndex].GetComponent<BoxCollider>();
+        Vector3 position = currentPath[currentIndex].transform.position;
+
+        BoxCollider tileCollider = currentPath[currentIndex].GetComponent<BoxCollider>();
         float topY = tileCollider != null ? tileCollider.bounds.max.y : position.y;
         Vector3 target = new Vector3(position.x, topY, position.z);
         transform.position = Vector3.MoveTowards(transform.position, target, 5f * Time.deltaTime);
@@ -60,21 +71,24 @@ public class PlayerMovement : MonoBehaviour
         if (Vector3.Distance(transform.position, target) < 0.1f)
         {
             currentIndex++;
-            if (currentpath[currentIndex] == null)
+            if (currentIndex >= currentPath.Count)
             {
-                currentpath = null;
+                pathFinder.startTile = pathFinder.endTile;
+                currentPath = null;
                 currentIndex = 0;
-                return;
+                return false;
             }
 
         }
+
+        return true;
     }
 
     public void setPath(List<Tile> path)
     {
         if(path != null && path.Count > 0)
         {
-            currentpath = new List<Tile>(path);
+            currentPath = new List<Tile>(path);
             currentIndex = 0;
         }
         

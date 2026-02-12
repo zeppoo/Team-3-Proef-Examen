@@ -181,6 +181,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4846582712619980462, guid: 1249ade55b326d14681caa95bd55a131, type: 3}
+      propertyPath: neighbours.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4846582712619980462, guid: 1249ade55b326d14681caa95bd55a131, type: 3}
+      propertyPath: 'neighbours.Array.data[0]'
+      value: 
+      objectReference: {fileID: 597801581}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -295,6 +303,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4846582712619980462, guid: 1249ade55b326d14681caa95bd55a131, type: 3}
+      propertyPath: neighbours.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4846582712619980462, guid: 1249ade55b326d14681caa95bd55a131, type: 3}
+      propertyPath: 'neighbours.Array.data[0]'
+      value: 
+      objectReference: {fileID: 813274670}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -795,6 +811,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4537203599645017491, guid: 1249ade55b326d14681caa95bd55a131, type: 3}
   m_PrefabInstance: {fileID: 836738376}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &597801581 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3872165556669341481, guid: 1249ade55b326d14681caa95bd55a131, type: 3}
+  m_PrefabInstance: {fileID: 214073043}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &599915448
 GameObject:
   m_ObjectHideFlags: 0
@@ -925,6 +946,11 @@ Tilemap:
 Transform:
   m_CorrespondingSourceObject: {fileID: 4537203599645017491, guid: 1249ade55b326d14681caa95bd55a131, type: 3}
   m_PrefabInstance: {fileID: 466740042}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &813274670 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3872165556669341481, guid: 1249ade55b326d14681caa95bd55a131, type: 3}
+  m_PrefabInstance: {fileID: 69228689}
   m_PrefabAsset: {fileID: 0}
 --- !u!4 &829675643 stripped
 Transform:
@@ -1235,7 +1261,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec3b340eb8ace734babe7d6a3dc17f18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
-  currentTile: {fileID: 1218673028}
+  currentTile: {fileID: 0}
   selectedTile: {fileID: 0}
 --- !u!114 &1168145304
 MonoBehaviour:
@@ -1295,7 +1321,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2f75adb67861df4db75247ba67c2ed7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PathFinder
-  startTile: {fileID: 0}
+  startTile: {fileID: 1218673028}
   endTile: {fileID: 0}
   playerMovement: {fileID: 0}
 --- !u!1001 &1171547418
@@ -1630,7 +1656,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1639979092}
-  - component: {fileID: 1639979093}
   m_Layer: 0
   m_Name: GridManager
   m_TagString: Untagged
@@ -1656,18 +1681,6 @@ Transform:
   - {fileID: 493869631}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1639979093
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1639979091}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b44c8066d780624b82ba9f19322abec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TileManager
 --- !u!1 &1676192337
 GameObject:
   m_ObjectHideFlags: 0
@@ -1774,6 +1787,10 @@ PrefabInstance:
     - target: {fileID: 6077070794859957290, guid: 766cd9021e29b0a44bb861c18f601eb9, type: 3}
       propertyPath: m_Center.y
       value: -0.30128956
+      objectReference: {fileID: 0}
+    - target: {fileID: 6077070794859957290, guid: 766cd9021e29b0a44bb861c18f601eb9, type: 3}
+      propertyPath: m_LayerOverridePriority
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 6487114905583910286, guid: 766cd9021e29b0a44bb861c18f601eb9, type: 3}
       propertyPath: m_Name
