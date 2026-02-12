@@ -139,7 +139,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3872165556669341481, guid: 1249ade55b326d14681caa95bd55a131, type: 3}
       propertyPath: m_Name
-      value: minecraft_grass_block
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4537203599645017491, guid: 1249ade55b326d14681caa95bd55a131, type: 3}
       propertyPath: m_LocalPosition.x
@@ -181,6 +181,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4846582712619980462, guid: 1249ade55b326d14681caa95bd55a131, type: 3}
+      propertyPath: neighbours.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4846582712619980462, guid: 1249ade55b326d14681caa95bd55a131, type: 3}
+      propertyPath: 'neighbours.Array.data[0]'
+      value: 
+      objectReference: {fileID: 597801581}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -196,7 +204,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3872165556669341481, guid: 1249ade55b326d14681caa95bd55a131, type: 3}
       propertyPath: m_Name
-      value: minecraft_grass_block
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 4537203599645017491, guid: 1249ade55b326d14681caa95bd55a131, type: 3}
       propertyPath: m_LocalPosition.x
@@ -253,7 +261,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3872165556669341481, guid: 1249ade55b326d14681caa95bd55a131, type: 3}
       propertyPath: m_Name
-      value: minecraft_grass_block
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4537203599645017491, guid: 1249ade55b326d14681caa95bd55a131, type: 3}
       propertyPath: m_LocalPosition.x
@@ -295,6 +303,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4846582712619980462, guid: 1249ade55b326d14681caa95bd55a131, type: 3}
+      propertyPath: neighbours.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4846582712619980462, guid: 1249ade55b326d14681caa95bd55a131, type: 3}
+      propertyPath: 'neighbours.Array.data[0]'
+      value: 
+      objectReference: {fileID: 813274670}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -579,7 +595,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3872165556669341481, guid: 1249ade55b326d14681caa95bd55a131, type: 3}
       propertyPath: m_Name
-      value: minecraft_grass_block
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4537203599645017491, guid: 1249ade55b326d14681caa95bd55a131, type: 3}
       propertyPath: m_LocalPosition.x
@@ -743,7 +759,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3872165556669341481, guid: 1249ade55b326d14681caa95bd55a131, type: 3}
       propertyPath: m_Name
-      value: minecraft_grass_block
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 4537203599645017491, guid: 1249ade55b326d14681caa95bd55a131, type: 3}
       propertyPath: m_LocalPosition.x
@@ -794,6 +810,11 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 4537203599645017491, guid: 1249ade55b326d14681caa95bd55a131, type: 3}
   m_PrefabInstance: {fileID: 836738376}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &597801581 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3872165556669341481, guid: 1249ade55b326d14681caa95bd55a131, type: 3}
+  m_PrefabInstance: {fileID: 214073043}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &599915448
 GameObject:
@@ -926,6 +947,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4537203599645017491, guid: 1249ade55b326d14681caa95bd55a131, type: 3}
   m_PrefabInstance: {fileID: 466740042}
   m_PrefabAsset: {fileID: 0}
+--- !u!1 &813274670 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3872165556669341481, guid: 1249ade55b326d14681caa95bd55a131, type: 3}
+  m_PrefabInstance: {fileID: 69228689}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &829675643 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4537203599645017491, guid: 1249ade55b326d14681caa95bd55a131, type: 3}
@@ -990,7 +1016,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3872165556669341481, guid: 1249ade55b326d14681caa95bd55a131, type: 3}
       propertyPath: m_Name
-      value: minecraft_grass_block
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4537203599645017491, guid: 1249ade55b326d14681caa95bd55a131, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1047,7 +1073,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3872165556669341481, guid: 1249ade55b326d14681caa95bd55a131, type: 3}
       propertyPath: m_Name
-      value: minecraft_grass_block
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4537203599645017491, guid: 1249ade55b326d14681caa95bd55a131, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1235,6 +1261,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ec3b340eb8ace734babe7d6a3dc17f18, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
+  currentTile: {fileID: 0}
+  selectedTile: {fileID: 0}
 --- !u!114 &1168145304
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1281,6 +1309,21 @@ MonoBehaviour:
   m_DefaultActionMap: Movement
   m_SplitScreenIndex: -1
   m_Camera: {fileID: 0}
+--- !u!114 &1168145309
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1168145301}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b2f75adb67861df4db75247ba67c2ed7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PathFinder
+  startTile: {fileID: 1218673028}
+  endTile: {fileID: 0}
+  playerMovement: {fileID: 0}
 --- !u!1001 &1171547418
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1291,7 +1334,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3872165556669341481, guid: 1249ade55b326d14681caa95bd55a131, type: 3}
       propertyPath: m_Name
-      value: minecraft_grass_block
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4537203599645017491, guid: 1249ade55b326d14681caa95bd55a131, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1348,7 +1391,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3872165556669341481, guid: 1249ade55b326d14681caa95bd55a131, type: 3}
       propertyPath: m_Name
-      value: minecraft_grass_block
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 4537203599645017491, guid: 1249ade55b326d14681caa95bd55a131, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1531,7 +1574,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 3872165556669341481, guid: 1249ade55b326d14681caa95bd55a131, type: 3}
       propertyPath: m_Name
-      value: minecraft_grass_block
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4537203599645017491, guid: 1249ade55b326d14681caa95bd55a131, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1578,6 +1621,17 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1249ade55b326d14681caa95bd55a131, type: 3}
+--- !u!114 &1218673028 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4846582712619980462, guid: 1249ade55b326d14681caa95bd55a131, type: 3}
+  m_PrefabInstance: {fileID: 95998217}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2527e9406d77eba469bb08237614512c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Tile
 --- !u!4 &1341218142 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4537203599645017491, guid: 1249ade55b326d14681caa95bd55a131, type: 3}
@@ -1602,7 +1656,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1639979092}
-  - component: {fileID: 1639979093}
   m_Layer: 0
   m_Name: GridManager
   m_TagString: Untagged
@@ -1628,18 +1681,6 @@ Transform:
   - {fileID: 493869631}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1639979093
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1639979091}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b44c8066d780624b82ba9f19322abec, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TileManager
 --- !u!1 &1676192337
 GameObject:
   m_ObjectHideFlags: 0
@@ -1709,7 +1750,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3535911653293194650, guid: 766cd9021e29b0a44bb861c18f601eb9, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -3.6805384
+      value: -3.55
       objectReference: {fileID: 0}
     - target: {fileID: 3535911653293194650, guid: 766cd9021e29b0a44bb861c18f601eb9, type: 3}
       propertyPath: m_LocalRotation.w
@@ -1739,6 +1780,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6077070794859957290, guid: 766cd9021e29b0a44bb861c18f601eb9, type: 3}
+      propertyPath: m_Height
+      value: 2.602579
+      objectReference: {fileID: 0}
+    - target: {fileID: 6077070794859957290, guid: 766cd9021e29b0a44bb861c18f601eb9, type: 3}
+      propertyPath: m_Center.y
+      value: -0.30128956
+      objectReference: {fileID: 0}
+    - target: {fileID: 6077070794859957290, guid: 766cd9021e29b0a44bb861c18f601eb9, type: 3}
+      propertyPath: m_LayerOverridePriority
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 6487114905583910286, guid: 766cd9021e29b0a44bb861c18f601eb9, type: 3}
       propertyPath: m_Name
       value: Player
@@ -1754,6 +1807,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 6487114905583910286, guid: 766cd9021e29b0a44bb861c18f601eb9, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1168145303}
+    - targetCorrespondingSourceObject: {fileID: 6487114905583910286, guid: 766cd9021e29b0a44bb861c18f601eb9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1168145309}
   m_SourcePrefab: {fileID: 100100000, guid: 766cd9021e29b0a44bb861c18f601eb9, type: 3}
 --- !u!1001 &1886340954
 PrefabInstance:

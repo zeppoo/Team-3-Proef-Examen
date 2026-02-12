@@ -12,7 +12,8 @@ GameObject:
   - component: {fileID: 5709252070587025126}
   - component: {fileID: 4725467159257208413}
   - component: {fileID: 6077070794859957290}
-  - component: {fileID: 5956555701578905071}
+  - component: {fileID: 5801682104124364572}
+  - component: {fileID: 6602589909190141763}
   m_Layer: 0
   m_Name: Player
   m_TagString: Unit
@@ -114,7 +115,7 @@ CapsuleCollider:
   m_Height: 2
   m_Direction: 1
   m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &5956555701578905071
+--- !u!114 &5801682104124364572
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -123,6 +124,23 @@ MonoBehaviour:
   m_GameObject: {fileID: 6487114905583910286}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7b34038c1a11e2341b1232c700f6185e, type: 3}
+  m_Script: {fileID: 11500000, guid: 6cfe562867435b64d90a9fad5473ea4e, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UnitController
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerMovement
+  currentTile: {fileID: 0}
+  selectedTile: {fileID: 0}
+--- !u!114 &6602589909190141763
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6487114905583910286}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21b100928a9449444b379bee51e2c573, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PathFinder
+  startTile: {fileID: 0}
+  endTile: {fileID: 0}
+  playerMovement: {fileID: 0}
