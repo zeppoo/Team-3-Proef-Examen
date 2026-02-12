@@ -195,7 +195,7 @@ PrefabInstance:
       addedObject: {fileID: 1037105468252196109}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 7a532a79c55ddc548bf1c50d2c046944, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 8860315138107755048}
+      addedObject: {fileID: 3766437104224661021}
   m_SourcePrefab: {fileID: 100100000, guid: 7a532a79c55ddc548bf1c50d2c046944, type: 3}
 --- !u!1 &3872165556669341481 stripped
 GameObject:
@@ -223,7 +223,7 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.02, y: 0.020000001, z: 0.020000009}
   m_Center: {x: 0, y: 0.0100000305, z: 0.000000004656613}
---- !u!114 &8860315138107755048
+--- !u!114 &3766437104224661021
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -232,13 +232,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 3872165556669341481}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: adcd6ca2dc09bcd4ea4f0ed86856b07f, type: 3}
+  m_Script: {fileID: 11500000, guid: d2caf84498c77313f8b8dd7fedcd27ec, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Tile
+  m_EditorClassIdentifier: Assembly-CSharp::PathTile
   parent: {fileID: 0}
   connecetdTile: {fileID: 0}
   neighbours: []
-  isWalkable: 1
 --- !u!4 &4537203599645017491 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: -8679921383154817045, guid: 7a532a79c55ddc548bf1c50d2c046944, type: 3}

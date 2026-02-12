@@ -1,11 +1,13 @@
 using UnityEngine;
 
-public class GrassTile : MonoBehaviour
+public class GrassTile : Tile
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public override bool isWalkable => true;
+
+    public override void Start()
     {
-        
+        base.Start();
+        materialInstance.color = Color.green;
     }
 
     // Update is called once per frame

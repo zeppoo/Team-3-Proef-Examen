@@ -7,10 +7,10 @@ public class PathTile : Tile
 {
     public override bool isWalkable => true;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public override void Start()
     {
-        
+        base.Start();
+        materialInstance.color = Color.yellow;
     }
 
     // Update is called once per frame

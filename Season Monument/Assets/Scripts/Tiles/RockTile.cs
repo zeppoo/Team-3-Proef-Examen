@@ -1,11 +1,11 @@
 using UnityEngine;
 
-public class RockTile : MonoBehaviour
+public class RockTile : Tile
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public override void Start()
     {
-        
+        base.Start();
+        materialInstance.color = Color.gray;
     }
 
     // Update is called once per frame
