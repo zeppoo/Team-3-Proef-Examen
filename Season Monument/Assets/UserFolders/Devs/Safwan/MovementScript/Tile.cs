@@ -7,14 +7,15 @@ public class Tile : MonoBehaviour
     public Tile parent;
     public Tile connecetdTile;
     public List<GameObject> neighbours = new List<GameObject>();
-    public bool isWalkable;
-    private BoxCollider col2d;
-    bool debug;
+    public bool isWalkable = true;
+    private BoxCollider col;
+    internal bool visited;
 
     private void Start()
     {
+        col = gameObject.GetComponent<BoxCollider>();
         FindNeigbour();
-        col2d = gameObject.GetComponent<BoxCollider>();
+        isWalkable = true;
     }
 
     public void FindNeigbour()
@@ -25,9 +26,9 @@ public class Tile : MonoBehaviour
         {
             if (tile.gameObject.GetInstanceID() != gameObject.GetInstanceID())
             {
-                if (col2d.bounds.Intersects(tile.gameObject.GetComponent<Collider2D>().bounds))
+           
+                if (col.bounds.Intersects(tile.gameObject.GetComponent<BoxCollider>().bounds))
                 {
-                    Debug.Log("[" + gameObject.name + "] found a neighbour: " + tile.gameObject.name);
                     neighbours.Add(tile.gameObject);
                 }
             }
