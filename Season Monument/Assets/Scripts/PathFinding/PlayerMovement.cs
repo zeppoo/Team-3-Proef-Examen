@@ -22,7 +22,7 @@ public class PlayerMovement : MonoBehaviour
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (!Physics.Raycast(ray, out RaycastHit hit)) return;
-
+        Debug.Log("Hit: " + hit.collider.name);
         if (hit.collider.CompareTag("Tile"))
         {
             selectedTile = hit.collider.GetComponent<Tile>();
