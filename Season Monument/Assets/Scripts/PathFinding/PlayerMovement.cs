@@ -18,11 +18,16 @@ public class PlayerMovement : MonoBehaviour
        pathFinder = GetComponent<PathFinder>();
         currentTile = pathFinder.startTile;
     }
-    public void pointAndClick(InputAction.CallbackContext context) 
+    public void pointAndClick(InputAction.CallbackContext context)
+    {
+        if (!context.performed) return;
+        pointAndClick();
+    }
+
+    public void pointAndClick()
     {
         Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (!Physics.Raycast(ray, out RaycastHit hit)) return;
-
         if (hit.collider.CompareTag("Tile"))
         {
             selectedTile = hit.collider.GetComponent<Tile>();
@@ -42,12 +47,16 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
+        if (Mouse.current.leftButton.wasPressedThisFrame)
+        {
+            pointAndClick();
+        }
+
         bool flowControl = MovePlayer();
         if (!flowControl)
         {
             return;
         }
-       
     }
 
     private bool MovePlayer()
@@ -90,6 +99,6 @@ public class PlayerMovement : MonoBehaviour
             currentPath = new List<Tile>(path);
             currentIndex = 0;
         }
-        
+
     }
 }
