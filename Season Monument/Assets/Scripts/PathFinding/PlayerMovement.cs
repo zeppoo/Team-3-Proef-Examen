@@ -42,7 +42,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log(pathFinder.startTile.name);
         bool flowControl = MovePlayer();
         if (!flowControl)
         {

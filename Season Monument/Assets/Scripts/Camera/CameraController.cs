@@ -68,6 +68,8 @@ public class CameraController : MonoBehaviour
 
     void HandleInput()
     {
+        if (Keyboard.current == null) Debug.LogWarning("No keyboard detected for camera input.");
+
         if (Keyboard.current.rightArrowKey.wasPressedThisFrame)
         {
             currentState = (currentState + 1) % 4;
