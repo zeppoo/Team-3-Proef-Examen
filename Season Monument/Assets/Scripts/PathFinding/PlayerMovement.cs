@@ -87,6 +87,9 @@ public class PlayerMovement : MonoBehaviour
     {
         if(path != null && path.Count > 0)
         {
+            if (path[0] == pathFinder.startTile && path.Count > 1)
+                path.RemoveAt(0);
+
             currentPath = new List<Tile>(path);
             currentIndex = 0;
         }
