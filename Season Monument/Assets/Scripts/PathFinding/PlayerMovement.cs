@@ -13,10 +13,14 @@ public class PlayerMovement : MonoBehaviour
     private List<Tile> currentPath = new List<Tile>();
     private int currentIndex = 0;
     private int targetIndex = 0;
+
+    private FlowerPickUp flowerPickUp;
+    
     private void Start()
     {
        pathFinder = GetComponent<PathFinder>();
         currentTile = pathFinder.startTile;
+        flowerPickUp = GetComponent<FlowerPickUp>();
     }
     public void pointAndClick(InputAction.CallbackContext context) 
     {
@@ -36,19 +40,42 @@ public class PlayerMovement : MonoBehaviour
                  currentposition = tile.parent.transform.position;
                  tile = tile.parent;
             }
+        }
+
+        if (hit.collider.CompareTag("Flower"))
+        {
+            Debug.Log("Flower Clicked");
+            FlowerInfo info = hit.collider.GetComponent<FlowerInfo>();
+            selectedTile = info.placedTile;
+            float topY = hit.collider.bounds.max.y + 1;
+            Vector3 currentposition = selectedTile.transform.position;
+            tile = selectedTile.GetComponent<Tile>();
+            pathFinder.endTile = selectedTile;
+            pathFinder.FindPath();
+            flowerPickUp.canPickUp = true;
+            while (tile.parent != null)
+            {
+               currentposition = tile.parent.transform.position;
+               tile = tile.parent;
+            }
 
         }
     }
 
     private void Update()
     {
-        Debug.Log(pathFinder.startTile.name);
+        
         bool flowControl = MovePlayer();
         if (!flowControl)
         {
             return;
         }
        
+    }
+
+    private void GoPickFlower()
+    {
+
     }
 
     private bool MovePlayer()

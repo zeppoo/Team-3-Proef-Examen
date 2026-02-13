@@ -52,10 +52,7 @@ public class PathFinder : MonoBehaviour
                     neighbourTile.visited = true;
                     neighbourTile.parent = currentTile;
                     tileQueue.Enqueue(neighbourTile);
-                   
-                   
-                    
-                    
+                  
                 }
             }
         }
