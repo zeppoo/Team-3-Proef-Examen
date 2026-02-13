@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 988312703637399701}
   - component: {fileID: 3840430946744925808}
   - component: {fileID: 697959672917861311}
-  - component: {fileID: 679150085772700228}
   - component: {fileID: 8054614197643880044}
+  - component: {fileID: 3483860644181002718}
   m_Layer: 0
   m_Name: Camera
   m_TagString: Untagged
@@ -94,23 +94,6 @@ AudioListener:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3431227680778814765}
   m_Enabled: 1
---- !u!114 &679150085772700228
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3431227680778814765}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1cd12601f6dbe605dae8db6e24da93b2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  seasonStateManager: {fileID: 0}
-  target: {fileID: 0}
-  distance: 25
-  rotationSpeed: 8
-  isometricPitch: 35.264
 --- !u!114 &8054614197643880044
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -155,3 +138,23 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+--- !u!114 &3483860644181002718
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3431227680778814765}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1cd12601f6dbe605dae8db6e24da93b2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CameraController
+  seasonStateManager: {fileID: 0}
+  target: {fileID: 0}
+  heightTarget: {fileID: 0}
+  heightOffset: 0
+  distance: 5
+  rotationSpeed: 8
+  isometricPitch: 35.264
+  startState: 0
