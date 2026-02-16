@@ -12,6 +12,9 @@ public abstract class Tile : MonoBehaviour
     private Renderer rend;
     protected Material materialInstance;
 
+    [SerializeField] private TileData tileData;
+    public List<TileConnection> tileConnections = new List<TileConnection>();
+
     internal bool visited;
 
 
@@ -22,7 +25,7 @@ public abstract class Tile : MonoBehaviour
         // Create a unique material instance (IMPORTANT)
         materialInstance = rend.material;
 
-        
+
         SeasonEvents.OnSeasonChanged += OnSeasonChanged;
     }
 
@@ -32,13 +35,69 @@ public abstract class Tile : MonoBehaviour
     }
 
     public virtual void Start()
-    { 
+    {
         FindNeigbour();
+        ApplyTileConnections();
+        ApplyTileData();
+    }
+
+    public void SetTileData(TileData newData)
+    {
+        tileData = newData;
+        ApplyTileData();
+    }
+
+    protected void ApplyTileData()
+    {
+        if (tileData == null) return;
+
+        isWalkable = tileData.isWalkable;
+        materialInstance.color = tileData.tileColor;
     }
 
     public virtual void OnSeasonChanged(SeasonState season)
     {
-        // Base implementation does nothing, can be overridden by subclasses
+        if (tileData == null) return;
+
+        // Reset to defaults first
+        ApplyTileData();
+
+        // Apply season override if one exists
+        if (tileData.TryGetSeasonOverride(season, out SeasonOverride overrideData))
+        {
+            if (overrideData.overrideWalkable)
+                isWalkable = overrideData.isWalkable;
+            if (overrideData.overrideColor)
+                materialInstance.color = overrideData.tileColor;
+        }
+
+        tileData.OnTileSeasonChanged?.Invoke(season);
+    }
+
+    public void TileEntered()
+    {
+        if (tileData != null)
+            tileData.OnTileEntered?.Invoke();
+    }
+
+    public void TileExited()
+    {
+        if (tileData != null)
+            tileData.OnTileExited?.Invoke();
+    }
+
+    private void ApplyTileConnections()
+    {
+        foreach (TileConnection connection in tileConnections)
+        {
+            if (connection.connectedTile == null) continue;
+
+            if (!neighbours.Contains(connection.connectedTile.gameObject))
+                neighbours.Add(connection.connectedTile.gameObject);
+
+            if (connection.bidirectional && !connection.connectedTile.neighbours.Contains(gameObject))
+                connection.connectedTile.neighbours.Add(gameObject);
+        }
     }
 
     public void FindNeigbour()
