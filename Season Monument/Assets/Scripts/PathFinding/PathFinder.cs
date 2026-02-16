@@ -12,14 +12,13 @@ public class PathFinder : MonoBehaviour
 
     Queue <Tile> tileQueue = new Queue<Tile>();
 
-
-
     private void Start()
     {
         playerMovement = GetComponent<PlayerMovement>();
     }
     private void Update()
     {
+        
     }
 
     public void FindPath()
