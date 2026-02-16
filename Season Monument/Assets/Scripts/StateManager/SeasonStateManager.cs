@@ -14,6 +14,7 @@ public enum SeasonState
 public class SeasonStateManager : MonoBehaviour
 {
     [SerializeField] private SeasonState currentSeason = SeasonState.Spring;
+    [SerializeField] private StartRain startRain;
 
     public void SetSeason(SeasonState newSeason)
     {
@@ -54,6 +55,19 @@ public class SeasonStateManager : MonoBehaviour
     {
         // Raise initial season event
         SetSeason(currentSeason);
+        startRain = GetComponent<StartRain>();
+    }
+
+    private void Update()
+    {
+        if(currentSeason == SeasonState.Autumn)
+        {
+            startRain.StartRaining();
+        }
+        else
+        {
+            startRain.StopRaining();
+        }
     }
 }
 
@@ -84,6 +98,8 @@ public static class SeasonEvents
     internal static void RaiseAutumnStarted()
     {
         OnAutumnStarted?.Invoke();
+
+        
     }
 
     internal static void RaiseWinterStarted()
