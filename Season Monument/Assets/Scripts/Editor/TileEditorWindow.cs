@@ -4,7 +4,7 @@ using UnityEditor;
 public class TileEditorWindow : EditorWindow
 {
     public enum TileType { Grass, Path, Rock, Water }
-    public enum ToolMode { Place, Free, Delete }
+    public enum ToolMode { Place, Free, Delete, Connect }
 
     private TileType selectedTileType = TileType.Grass;
     private ToolMode currentMode = ToolMode.Place;
@@ -104,9 +104,25 @@ public class TileEditorWindow : EditorWindow
             ToolMode.Place => "Left-click in Scene View to place tiles.\nClick tile faces to place adjacent or stack on top.",
             ToolMode.Free => "Left-click to place at the cursor position.\nThe ghost snaps to the nearest grid cell at the set distance from the camera.",
             ToolMode.Delete => "Left-click on a tile to delete it.",
+            ToolMode.Connect => "Left-click on two tiles to create a connection.\nRight-click or press Escape to cancel selection.\nConnections are shown as cyan lines in Scene View.",
             _ => ""
         };
         EditorGUILayout.HelpBox(helpText, MessageType.Info);
+
+        if (currentMode == ToolMode.Connect)
+        {
+            if (TilePlacer.ConnectionFirstTile != null)
+            {
+                EditorGUILayout.HelpBox($"First tile selected: {TilePlacer.ConnectionFirstTile.gameObject.name}\nClick a second tile to complete the connection.", MessageType.Info);
+            }
+
+            TilePlacer.ConnectionBidirectional = EditorGUILayout.Toggle("Bidirectional", TilePlacer.ConnectionBidirectional);
+
+            if (GUILayout.Button("Cancel Selection"))
+            {
+                TilePlacer.CancelConnection();
+            }
+        }
     }
 
     private void OnSceneGUI(SceneView sceneView)
