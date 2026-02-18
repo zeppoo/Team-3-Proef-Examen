@@ -15,7 +15,9 @@ public class SeasonStateManager : MonoBehaviour
 {
     [SerializeField] private SeasonState currentSeason = SeasonState.Spring;
     [SerializeField] private StartRain startRain;
+    [SerializeField] internal RainCollection rainCollection;
 
+    
     public void SetSeason(SeasonState newSeason)
     {
         currentSeason = newSeason;
@@ -39,6 +41,7 @@ public class SeasonStateManager : MonoBehaviour
         }
     }
 
+ 
     public void NextSeason()
     {
         currentSeason = (SeasonState)(((int)currentSeason + 1) % 4);
@@ -56,17 +59,19 @@ public class SeasonStateManager : MonoBehaviour
         // Raise initial season event
         SetSeason(currentSeason);
         startRain = GetComponent<StartRain>();
+
+        rainCollection = FindObjectOfType<RainCollection>();
     }
 
     private void Update()
     {
         if(currentSeason == SeasonState.Autumn)
         {
-            startRain.StartRaining();
+           rainCollection.SetRainStatus(true);
         }
         else
         {
-            startRain.StopRaining();
+            rainCollection.SetRainStatus(false);
         }
     }
 }
