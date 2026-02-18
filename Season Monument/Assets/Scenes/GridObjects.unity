@@ -2094,6 +2094,25 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5dfcc156ded9feb71a8f545f21994366, type: 3}
+--- !u!1 &1371470816 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6487114905583910286, guid: 766cd9021e29b0a44bb861c18f601eb9, type: 3}
+  m_PrefabInstance: {fileID: 1713986601}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1371470821
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1371470816}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fda470acc077de745b4d891e51498a47, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::RainCollection
+  rainRate: 1
+  maxRainAmount: 2
 --- !u!4 &1482055158 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4543321405689770569, guid: 5dfcc156ded9feb71a8f545f21994366, type: 3}
@@ -2344,7 +2363,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6487114905583910286, guid: 766cd9021e29b0a44bb861c18f601eb9, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1371470821}
   m_SourcePrefab: {fileID: 100100000, guid: 766cd9021e29b0a44bb861c18f601eb9, type: 3}
 --- !u!1001 &1719245926
 PrefabInstance:
@@ -2764,7 +2786,7 @@ Light:
   m_InnerSpotAngle: 21.80208
   m_CookieSize: 10
   m_Shadows:
-    m_Type: 2
+    m_Type: 0
     m_Resolution: -1
     m_CustomResolution: -1
     m_Strength: 1
