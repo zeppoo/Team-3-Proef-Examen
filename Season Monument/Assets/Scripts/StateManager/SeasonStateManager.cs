@@ -36,6 +36,7 @@ public class SeasonStateManager : MonoBehaviour
         }
     }
 
+ 
     public void NextSeason()
     {
         currentSeason = (SeasonState)(((int)currentSeason + 1) % 4);
