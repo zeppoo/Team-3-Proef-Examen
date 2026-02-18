@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 3573945424244045113}
   - component: {fileID: 8160031485623415531}
   - component: {fileID: 8130217546501225942}
+  - component: {fileID: -6384887059440083961}
   m_Layer: 0
   m_Name: 'EmptyTile '
   m_TagString: Untagged
@@ -111,3 +112,22 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &-6384887059440083961
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1738251906069139368}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8523652b476a2721db68dc6650271ed3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EmptyTile
+  parent: {fileID: 0}
+  connecetdTile: {fileID: 0}
+  neighbours: []
+  tileData: {fileID: 0}
+  tileConnections: []
+  overrideMesh: {fileID: 0}
+  meshRotation: {x: 0, y: 0, z: 0}
