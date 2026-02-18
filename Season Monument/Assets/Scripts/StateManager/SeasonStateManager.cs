@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public enum SeasonState
@@ -14,14 +12,13 @@ public enum SeasonState
 public class SeasonStateManager : MonoBehaviour
 {
     [SerializeField] private SeasonState currentSeason = SeasonState.Spring;
-    [SerializeField] private StartRain startRain;
 
     public void SetSeason(SeasonState newSeason)
     {
         currentSeason = newSeason;
         Debug.Log("Season changed to: " + currentSeason);
         SeasonEvents.RaiseSeasonChanged(currentSeason);
-        
+
         switch (currentSeason)
         {
             case SeasonState.Spring:
@@ -53,21 +50,7 @@ public class SeasonStateManager : MonoBehaviour
 
     void Start()
     {
-        // Raise initial season event
         SetSeason(currentSeason);
-        startRain = GetComponent<StartRain>();
-    }
-
-    private void Update()
-    {
-        if(currentSeason == SeasonState.Autumn)
-        {
-            startRain.StartRaining();
-        }
-        else
-        {
-            startRain.StopRaining();
-        }
     }
 }
 

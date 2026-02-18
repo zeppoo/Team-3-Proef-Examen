@@ -3,13 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 public abstract class Tile : MonoBehaviour
 {
-    public Tile parent;
-    public Tile connecetdTile;
-    public List<GameObject> neighbours = new List<GameObject>();
+    internal Tile parent;
+    internal List<GameObject> neighbours = new List<GameObject>();
 
     public virtual bool isWalkable { get; protected set; }
-    private BoxCollider col;
-    private Renderer rend;
     protected Material materialInstance;
 
     [SerializeField] private TileData tileData;
@@ -24,10 +21,12 @@ public abstract class Tile : MonoBehaviour
 
     public virtual void OnEnable()
     {
-        rend = GetComponent<Renderer>();
-        col = gameObject.GetComponent<BoxCollider>();
-        // Create a unique material instance (IMPORTANT)
-        materialInstance = rend.material;
+        Renderer rend = GetComponent<Renderer>();
+        // Use sharedMaterial in edit mode to avoid leaking material instances
+        if (Application.isPlaying)
+            materialInstance = rend.material;
+        else
+            materialInstance = rend.sharedMaterial;
 
 
         SeasonEvents.OnSeasonChanged += OnSeasonChanged;
@@ -145,6 +144,7 @@ public abstract class Tile : MonoBehaviour
     public void FindNeigbour()
     {
         Tile[] allTiles = FindObjectsByType<Tile>(FindObjectsSortMode.None);
+        BoxCollider col = gameObject.GetComponent<BoxCollider>();
         float tileSize = col.bounds.size.x;
 
         foreach (Tile tile in allTiles)
