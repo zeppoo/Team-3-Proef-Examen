@@ -9,26 +9,25 @@ public class CameraController : MonoBehaviour
     public enum CameraState { NorthEast, SouthEast, SouthWest, NorthWest }
 
     [Header("Dependencies")]
-    public SeasonStateManager seasonStateManager;
-
-    public Transform target;
+    [SerializeField] private SeasonStateManager seasonStateManager;
+    [SerializeField] private Transform target;
 
     [Header("Height")]
-    public Transform heightTarget;
-    public float heightOffset = 0f;
+    [SerializeField] private Transform heightTarget;
+    [SerializeField] private float heightOffset = 0f;
 
     [Header("Orbit Settings")]
-    public float distance = 5f;
-    public float rotationSpeed = 8f;
+    [SerializeField] private float distance = 5f;
+    [SerializeField] private float rotationSpeed = 8f;
 
     [Header("Isometric Angle")]
-    public float isometricPitch = 35.264f;
+    [SerializeField] private float isometricPitch = 35.264f;
 
     [Header("State")]
-    public CameraState startState = CameraState.NorthEast;
+    [SerializeField] private CameraState startState = CameraState.NorthEast;
 
     [Header("Swipe")]
-    public float minSwipeDistance = 100f;
+    [SerializeField] private float minSwipeDistance = 100f;
 
     private Vector2 touchStartPos;
     private Vector2 touchEndPos;
@@ -37,7 +36,7 @@ public class CameraController : MonoBehaviour
     private float currentYaw;
     private float targetYaw;
 
-    void Start()
+    private void Start()
     {
         if (!target) return;
 
@@ -46,7 +45,7 @@ public class CameraController : MonoBehaviour
         UpdateCameraPosition();
     }
 
-    void Update()
+    private void Update()
     {
         if (!target) return;
 
@@ -65,7 +64,7 @@ public class CameraController : MonoBehaviour
         UpdateCameraPosition();
     }
 
-    void OnValidate()
+    private void OnValidate()
     {
         if (!target) return;
         currentState = (int)startState;
@@ -73,7 +72,7 @@ public class CameraController : MonoBehaviour
         UpdateCameraPosition();
     }
 
-    void HandleInput()
+    private void HandleInput()
     {
         if (Keyboard.current == null) return;
 
@@ -91,7 +90,7 @@ public class CameraController : MonoBehaviour
         }
     }
 
-    void HandleSwipe()
+    private void HandleSwipe()
     {
         if (Input.touchCount > 0)
         {
@@ -121,7 +120,7 @@ public class CameraController : MonoBehaviour
         }
     }
 
-    void ProcessSwipe(Vector2 start, Vector2 end)
+    private void ProcessSwipe(Vector2 start, Vector2 end)
     {
         Vector2 swipe = end - start;
 
@@ -142,13 +141,12 @@ public class CameraController : MonoBehaviour
         }
     }
 
-    void UpdateCameraPosition()
+    private void UpdateCameraPosition()
     {
         Vector3 lookAtPos = target.position;
+
         if (heightTarget != null)
-        {
             lookAtPos.y = heightTarget.position.y + heightOffset;
-        }
 
         float yawRad = currentYaw * Mathf.Deg2Rad;
         float pitchRad = isometricPitch * Mathf.Deg2Rad;
