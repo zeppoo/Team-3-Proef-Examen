@@ -193,15 +193,9 @@ public static partial class TileEditor
         Transform tilemap = grid.transform.Find("Tilemap");
         if (tilemap == null) return;
 
-        Vector3 origin = grid.transform.position;
         int halfExtent = 50;
 
         Handles.color = new Color(1f, 1f, 1f, 0.15f);
-
-        Vector3 cellRight = grid.CellToWorld(new Vector3Int(1, 0, 0)) - grid.CellToWorld(Vector3Int.zero);
-        Vector3 cellUp = grid.CellToWorld(new Vector3Int(0, 1, 0)) - grid.CellToWorld(Vector3Int.zero);
-
-        Vector3 gridOrigin = grid.CellToWorld(new Vector3Int(-halfExtent, -halfExtent, 0));
 
         for (int i = -halfExtent; i <= halfExtent; i++)
         {
