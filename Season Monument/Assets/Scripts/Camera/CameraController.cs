@@ -9,27 +9,30 @@ public class CameraController : MonoBehaviour
     public enum CameraState { NorthEast, SouthEast, SouthWest, NorthWest }
 
     [Header("Dependencies")]
-    public SeasonStateManager seasonStateManager;
+    [SerializeField] private SeasonStateManager seasonStateManager;
 
-    public Transform target;
+    [SerializeField] private Transform target;
 
     [Header("Height")]
-    public Transform heightTarget;
-    public float heightOffset = 0f;
+    [SerializeField] private Transform heightTarget;
+    [SerializeField] private float heightOffset = 0f;
 
     [Header("Orbit Settings")]
-    public float distance = 5f;
-    public float rotationSpeed = 8f;
+    [SerializeField] private float distance = 5f;
+    [SerializeField] private float rotationSpeed = 8f;
 
     [Header("Isometric Angle")]
-    public float isometricPitch = 35.264f; // Classic isometric angle
+    [SerializeField] private float isometricPitch = 35.264f; // Classic isometric angle
 
     [Header("State")]
-    public CameraState startState = CameraState.NorthEast;
+    [SerializeField] private CameraState startState = CameraState.NorthEast;
 
     private int currentState = 0;
     private float currentYaw;
     private float targetYaw;
+
+    private float currentHeight;
+    private float targetHeight;
 
     void Start()
     {
@@ -37,6 +40,10 @@ public class CameraController : MonoBehaviour
 
         currentState = (int)startState;
         currentYaw = targetYaw = currentState * -90f + 45f;
+
+        float h = heightTarget != null ? heightTarget.position.y + heightOffset : target.position.y;
+        currentHeight = targetHeight = h;
+
         UpdateCameraPosition();
     }
 
@@ -51,6 +58,12 @@ public class CameraController : MonoBehaviour
             currentYaw = Mathf.LerpAngle(
                 currentYaw,
                 targetYaw,
+                Time.deltaTime * rotationSpeed
+            );
+
+            currentHeight = Mathf.Lerp(
+                currentHeight,
+                targetHeight,
                 Time.deltaTime * rotationSpeed
             );
         }
@@ -74,25 +87,30 @@ public class CameraController : MonoBehaviour
         {
             currentState = (currentState + 1) % 4;
             targetYaw = currentState * -90f + 45f;
+            UpdateTargetHeight();
             seasonStateManager.NextSeason();
-
         }
         else if (Keyboard.current.leftArrowKey.wasPressedThisFrame)
         {
             currentState = (currentState + 3) % 4;
             targetYaw = currentState * -90f + 45f;
+            UpdateTargetHeight();
             seasonStateManager.PreviousSeason();
         }
     }
 
+    void UpdateTargetHeight()
+    {
+        if (heightTarget != null)
+            targetHeight = heightTarget.position.y + heightOffset;
+        else
+            targetHeight = target.position.y;
+    }
+
     void UpdateCameraPosition()
     {
-        // Use heightTarget's Y if assigned, otherwise use target's Y
         Vector3 lookAtPos = target.position;
-        if (heightTarget != null)
-        {
-            lookAtPos.y = heightTarget.position.y + heightOffset;
-        }
+        lookAtPos.y = currentHeight;
 
         float yawRad = currentYaw * Mathf.Deg2Rad;
         float pitchRad = isometricPitch * Mathf.Deg2Rad;

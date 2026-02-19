@@ -10,6 +10,7 @@ public class TileDebugger : EditorWindow
     private bool showWalkable = true;
     private bool showNonWalkable = true;
     private bool showNeighbourLines = false;
+    private bool showConnectionLines = true;
     private float neighbourLineThickness = 2f;
 
     private Vector2 scrollPosition;
@@ -49,7 +50,8 @@ public class TileDebugger : EditorWindow
         showWalkable = EditorGUILayout.Toggle("Show Walkable", showWalkable);
         showNonWalkable = EditorGUILayout.Toggle("Show Non-Walkable", showNonWalkable);
         showNeighbourLines = EditorGUILayout.Toggle("Show Neighbour Lines", showNeighbourLines);
-        if (showNeighbourLines)
+        showConnectionLines = EditorGUILayout.Toggle("Show Connection Lines", showConnectionLines);
+        if (showNeighbourLines || showConnectionLines)
         {
             neighbourLineThickness = EditorGUILayout.Slider("Line Thickness", neighbourLineThickness, 1f, 10f);
         }
@@ -99,7 +101,8 @@ public class TileDebugger : EditorWindow
             EditorGUILayout.LabelField(tile.gameObject.name, GUILayout.Width(150));
             EditorGUILayout.LabelField(typeName, GUILayout.Width(80));
             EditorGUILayout.LabelField(walkableLabel, colorStyle, GUILayout.Width(70));
-            EditorGUILayout.LabelField($"Neighbours: {tile.neighbours.Count}", GUILayout.Width(100));
+            EditorGUILayout.LabelField($"N: {tile.neighbours.Count}", GUILayout.Width(50));
+            EditorGUILayout.LabelField($"C: {tile.tileConnections.Count}", GUILayout.Width(50));
 
             if (GUILayout.Button("Select", GUILayout.Width(50)))
             {
@@ -123,12 +126,24 @@ public class TileDebugger : EditorWindow
             EditorGUILayout.LabelField($"Walkable: {selectedTile.isWalkable}");
             EditorGUILayout.LabelField($"Visited: {selectedTile.visited}");
             EditorGUILayout.LabelField($"Neighbours: {selectedTile.neighbours.Count}");
+            EditorGUILayout.LabelField($"Connections: {selectedTile.tileConnections.Count}");
+
+            if (selectedTile.tileConnections.Count > 0)
+            {
+                EditorGUI.indentLevel++;
+                foreach (TileConnection conn in selectedTile.tileConnections)
+                {
+                    if (conn.connectedTile != null)
+                    {
+                        string validLabel = conn.valid ? "valid" : "invalid";
+                        EditorGUILayout.LabelField($"-> {conn.connectedTile.gameObject.name} ({(conn.bidirectional ? "bi" : "one-way")}, {validLabel})");
+                    }
+                }
+                EditorGUI.indentLevel--;
+            }
 
             if (selectedTile.parent != null)
                 EditorGUILayout.LabelField($"Parent Tile: {selectedTile.parent.gameObject.name}");
-
-            if (selectedTile.connecetdTile != null)
-                EditorGUILayout.LabelField($"Connected Tile: {selectedTile.connecetdTile.gameObject.name}");
         }
 
         if (debugDraw)
@@ -144,6 +159,7 @@ public class TileDebugger : EditorWindow
             tile.neighbours.Clear();
         }
 
+        // Find cardinal neighbours (6 directions)
         foreach (Tile tile in allTiles)
         {
             foreach (Tile other in allTiles)
@@ -165,7 +181,29 @@ public class TileDebugger : EditorWindow
             }
         }
 
-        Debug.Log($"[TileDebugger] Found neighbours for {allTiles.Length} tiles.");
+        // Also add valid tile connections as neighbours
+        int connectionCount = 0;
+        foreach (Tile tile in allTiles)
+        {
+            foreach (TileConnection connection in tile.tileConnections)
+            {
+                if (connection.connectedTile == null || !connection.valid) continue;
+
+                if (!tile.neighbours.Contains(connection.connectedTile.gameObject))
+                {
+                    tile.neighbours.Add(connection.connectedTile.gameObject);
+                    connectionCount++;
+                }
+
+                if (connection.bidirectional && !connection.connectedTile.neighbours.Contains(tile.gameObject))
+                {
+                    connection.connectedTile.neighbours.Add(tile.gameObject);
+                    connectionCount++;
+                }
+            }
+        }
+
+        Debug.Log($"[TileDebugger] Found neighbours for {allTiles.Length} tiles. Added {connectionCount} connection links.");
     }
 
     private void OnSceneGUI(SceneView sceneView)
@@ -202,6 +240,23 @@ public class TileDebugger : EditorWindow
 
                     Vector3 neighbourPos = neighbour.transform.position + Vector3.up * gizmoHeight;
                     Handles.DrawLine(position, neighbourPos, neighbourLineThickness);
+                }
+            }
+
+            if (showConnectionLines)
+            {
+                foreach (TileConnection connection in tile.tileConnections)
+                {
+                    if (connection.connectedTile == null) continue;
+
+                    bool isValid = tile.isWalkable && connection.connectedTile.isWalkable;
+                    Handles.color = isValid ? Color.blue : Color.red;
+                    Vector3 connPos = connection.connectedTile.transform.position + Vector3.up * gizmoHeight;
+                    Handles.DrawLine(position, connPos, neighbourLineThickness);
+
+                    // Draw midpoint sphere
+                    Vector3 mid = (position + connPos) * 0.5f;
+                    Handles.SphereHandleCap(0, mid, Quaternion.identity, gizmoSize, EventType.Repaint);
                 }
             }
         }
