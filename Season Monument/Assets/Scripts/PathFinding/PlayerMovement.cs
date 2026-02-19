@@ -4,10 +4,9 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public Tile currentTile;
-    public Tile selectedTile;
+    private Tile currentTile;
+    private Tile selectedTile;
     private PathFinder pathFinder;
-    private Tile tile;
 
     private List<Tile> currentPath = new List<Tile>();
     private int currentIndex = 0;
@@ -38,17 +37,8 @@ public class PlayerMovement : MonoBehaviour
         if (hit.collider.CompareTag("Tile"))
         {
             selectedTile = hit.collider.GetComponent<Tile>();
-            float topY = hit.collider.bounds.max.y + 1;
-            Vector3 currentposition = selectedTile.transform.position;
-            tile = selectedTile.GetComponent<Tile>();
             pathFinder.endTile = selectedTile;
             pathFinder.FindPath();
-             while (tile.parent != null)
-             {
-                 currentposition = tile.parent.transform.position;
-                 tile = tile.parent;
-            }
-
         }
     }
 

@@ -6,7 +6,7 @@ public static partial class TileEditor
 {
     // Connection mode state
     public static Tile ConnectionFirstTile { get; private set; }
-    public static bool ConnectionBidirectional = true;
+    internal static bool ConnectionBidirectional = true;
 
     public static void CancelConnection()
     {

@@ -144,9 +144,6 @@ public class TileDebugger : EditorWindow
 
             if (selectedTile.parent != null)
                 EditorGUILayout.LabelField($"Parent Tile: {selectedTile.parent.gameObject.name}");
-
-            if (selectedTile.connecetdTile != null)
-                EditorGUILayout.LabelField($"Connected Tile: {selectedTile.connecetdTile.gameObject.name}");
         }
 
         if (debugDraw)
