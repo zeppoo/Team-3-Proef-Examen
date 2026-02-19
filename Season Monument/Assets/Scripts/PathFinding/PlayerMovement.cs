@@ -1,18 +1,24 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
-    public Tile currentTile; 
-    public Tile selectedTile;
+    private Tile currentTile;
+    private Tile selectedTile;
     private PathFinder pathFinder;
-    private Tile tile;
 
     private List<Tile> currentPath = new List<Tile>();
     private int currentIndex = 0;
-    private int targetIndex = 0;
+
+    private const float TRAVEL_TIME = 0.5f;
+    private float travelProgress = 0f;
+    private Vector3 moveStart;
+    private Vector3 moveTarget;
+    private bool isMoving = false;
+
+    private bool isConnectionMove = false;
+
     private void Start()
     {
        pathFinder = GetComponent<PathFinder>();
@@ -31,17 +37,8 @@ public class PlayerMovement : MonoBehaviour
         if (hit.collider.CompareTag("Tile"))
         {
             selectedTile = hit.collider.GetComponent<Tile>();
-            float topY = hit.collider.bounds.max.y + 1;
-            Vector3 currentposition = selectedTile.transform.position;
-            tile = selectedTile.GetComponent<Tile>();
             pathFinder.endTile = selectedTile;
             pathFinder.FindPath();
-             while (tile.parent != null)
-             {
-                 currentposition = tile.parent.transform.position;
-                 tile = tile.parent;
-            }
-
         }
     }
 
@@ -52,44 +49,54 @@ public class PlayerMovement : MonoBehaviour
             pointAndClick();
         }
 
-        bool flowControl = MovePlayer();
-        if (!flowControl)
-        {
-            return;
-        }
+        MovePlayer();
     }
 
-    private bool MovePlayer()
+    private void MovePlayer()
     {
-        if (currentPath == null)
-            return false;
+        if (currentPath == null || currentPath.Count == 0)
+            return;
 
-        if (currentPath.Count == 0)
-            return false;
-
-        
-
-        Vector3 position = currentPath[currentIndex].transform.position;
-
-        BoxCollider tileCollider = currentPath[currentIndex].GetComponent<BoxCollider>();
-        float topY = tileCollider != null ? tileCollider.bounds.max.y : position.y;
-        Vector3 target = new Vector3(position.x, topY, position.z);
-        transform.position = Vector3.MoveTowards(transform.position, target, 5f * Time.deltaTime);
-
-        if (Vector3.Distance(transform.position, target) < 0.1f)
+        if (!isMoving)
         {
+            moveStart = transform.position;
+            Vector3 tilePos = currentPath[currentIndex].transform.position;
+            BoxCollider tileCollider = currentPath[currentIndex].GetComponent<BoxCollider>();
+            float topY = tileCollider != null ? tileCollider.bounds.max.y : tilePos.y;
+            moveTarget = new Vector3(tilePos.x, topY, tilePos.z);
+            travelProgress = 0f;
+            isMoving = true;
+
+            // Check if this step uses a tile connection
+            Tile previousTile = currentIndex > 0 ? currentPath[currentIndex - 1] : currentTile;
+            isConnectionMove = previousTile != null && previousTile.GetConnectionTo(currentPath[currentIndex]) != null;
+        }
+
+        if (isConnectionMove)
+        {
+            // Instant teleport over connections
+            transform.position = moveTarget;
+            travelProgress = 1f;
+        }
+        else
+        {
+            travelProgress += Time.deltaTime / TRAVEL_TIME;
+            transform.position = Vector3.Lerp(moveStart, moveTarget, travelProgress);
+        }
+
+        if (travelProgress >= 1f)
+        {
+            transform.position = moveTarget;
+            isMoving = false;
             currentIndex++;
+
             if (currentIndex >= currentPath.Count)
             {
                 pathFinder.startTile = pathFinder.endTile;
                 currentPath = null;
                 currentIndex = 0;
-                return false;
             }
-
         }
-
-        return true;
     }
 
     public void setPath(List<Tile> path)
@@ -101,6 +108,7 @@ public class PlayerMovement : MonoBehaviour
 
             currentPath = new List<Tile>(path);
             currentIndex = 0;
+            isMoving = false;
         }
 
     }

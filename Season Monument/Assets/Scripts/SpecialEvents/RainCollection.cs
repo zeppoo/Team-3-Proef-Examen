@@ -3,41 +3,24 @@ using UnityEngine;
 public class RainCollection : MonoBehaviour
 {
     private float rainAmount = 0f;
-    [SerializeField] private float rainRate = 1;
-    [SerializeField] private float maxRainAmount = 2;
+    [SerializeField] private float rainRate = 1f;
+    [SerializeField] private float maxRainAmount = 2f;
 
-    internal bool isRaining = false;
-    private bool isCollecting = false;
-
-    private bool hasCollectedEnoughRain = false;
-
-    void Update()
+    private void OnEnable()
     {
-        if (isRaining)
-        {
-            isCollecting = rainAmount <= maxRainAmount;
-
-            if (isCollecting)
-                CollectRain();
-        }
-
-        hasCollectedEnoughRain = rainAmount >= maxRainAmount;
-
-        
+        RainStateManager.OnRainTick += OnRainTick;
     }
 
-    public void CollectRain()
+    private void OnDisable()
     {
-        rainAmount += rainRate * Time.deltaTime;
+        RainStateManager.OnRainTick -= OnRainTick;
+    }
+
+    private void OnRainTick()
+    {
+        if (rainAmount >= maxRainAmount) return;
+
+        rainAmount += rainRate;
         Debug.Log("Collecting rain... Current amount: " + rainAmount);
-    }
-
-    public void SetRainStatus(bool raining)
-    {
-        isRaining = raining;
-        if (!isRaining)
-        {
-            isCollecting = false;
-        }
     }
 }
