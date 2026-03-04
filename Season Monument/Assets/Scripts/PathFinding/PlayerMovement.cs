@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static WorldStateSwitch;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -12,28 +13,20 @@ public class PlayerMovement : MonoBehaviour
     private List<Tile> currentPath = new List<Tile>();
     private int currentIndex = 0;
 
-    private const float TRAVEL_TIME = 0.5f;
+    private const float travelTime = 0.5f;
     private float travelProgress = 0f;
     private Vector3 moveStart;
     private Vector3 moveTarget;
     private bool isMoving = false;
 
     private bool isConnectionMove = false;
+    private WorldStateSwitch worldStateSwitch;
 
     private void Start()
     {
        pathFinder = GetComponent<PathFinder>();
         currentTile = pathFinder.startTile;
-    }
-    public void pointAndClick(InputAction.CallbackContext context)
-    {
-        if (!context.performed) return;
-        pointAndClick();
-    }
-
-    public void pointAndClick()
-    {
-      
+        worldStateSwitch = FindObjectOfType<WorldStateSwitch>();
     }
 
     private void Update()
@@ -65,8 +58,10 @@ public class PlayerMovement : MonoBehaviour
 
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
-            if (hit.collider.CompareTag("Tile"))
+            if (!(!hit.collider.CompareTag("Tile")))
             {
+                if (worldStateSwitch.CurrentState != WorldState.Gameplay)
+                    return;
                 selectedTile = hit.collider.GetComponent<Tile>();
 
                 float topY = hit.collider.bounds.max.y + 1;
@@ -117,7 +112,7 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            travelProgress += Time.deltaTime / TRAVEL_TIME;
+            travelProgress += Time.deltaTime / travelTime;
             transform.position = Vector3.Lerp(moveStart, moveTarget, travelProgress);
         }
 
@@ -136,7 +131,7 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    public void setPath(List<Tile> path)
+    public void SetPath(List<Tile> path)
     {
         if(path != null && path.Count > 0)
         {
