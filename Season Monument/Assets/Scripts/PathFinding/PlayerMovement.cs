@@ -21,17 +21,21 @@ public class PlayerMovement : MonoBehaviour
 
     private bool isConnectionMove = false;
     private WorldStateSwitch worldStateSwitch;
+    private SeasonState season;
+    private SeasonStateManager seasonStateManager;
 
     private void Start()
     {
        pathFinder = GetComponent<PathFinder>();
         currentTile = pathFinder.startTile;
         worldStateSwitch = FindObjectOfType<WorldStateSwitch>();
+        seasonStateManager = FindAnyObjectByType<SeasonStateManager>();
+
     }
 
     private void Update()
     {
-            
+        
         if (Input.touchCount > 0)
         {
             Touch touch = Input.GetTouch(0);
@@ -60,10 +64,12 @@ public class PlayerMovement : MonoBehaviour
         {
             if (!(!hit.collider.CompareTag("Tile")))
             {
-                if (worldStateSwitch.CurrentState != WorldState.Gameplay)
-                    return;
                 selectedTile = hit.collider.GetComponent<Tile>();
-
+                if (worldStateSwitch.CurrentState != WorldState.Gameplay)
+                {
+                    ActivateSeasonEffect(selectedTile);
+                    return;
+                }
                 float topY = hit.collider.bounds.max.y + 1;
                 Vector3 currentposition = selectedTile.transform.position;
 
@@ -78,12 +84,16 @@ public class PlayerMovement : MonoBehaviour
                     tile = tile.parent;
                 }
 
-                Debug.Log("Tile tapped: " + selectedTile.name);
+               
             }
         }
     }
 
-
+    private void ActivateSeasonEffect(Tile tile)
+    {
+        season = seasonStateManager.currentSeason;
+        tile.ActivateEffect(season);
+    }
     private void MovePlayer()
     {
         if (currentPath == null || currentPath.Count == 0)
