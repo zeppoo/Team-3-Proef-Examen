@@ -14,7 +14,12 @@ public class TreeTile : Tile
             transform.position = new Vector3(transform.position.x + 1f, transform.position.y - 1f, transform.position.z);
             hasBeenActivated = true;
         }
+        if(season == SeasonState.Summer)
+        {
+            Destroy(gameObject);
+        }
         base.ActivateEffect(season);
+        
     }
 
     public override void OnDisable()
