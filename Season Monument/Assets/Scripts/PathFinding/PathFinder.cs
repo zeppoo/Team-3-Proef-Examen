@@ -52,7 +52,7 @@ public class PathFinder : MonoBehaviour
             if (currentTile.gameObject.GetInstanceID() == endTile.gameObject.GetInstanceID())
             {
                 List<Tile> path = RetracePath(startTile, endTile);
-                playerMovement.setPath(path);
+                playerMovement.SetPath(path);
                 return;
             }
             foreach (GameObject neighbour in currentTile.neighbours)

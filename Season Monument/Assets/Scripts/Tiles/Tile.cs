@@ -165,4 +165,9 @@ public abstract class Tile : MonoBehaviour
             }
         }
     }
+
+   public virtual void ActivateEffect(SeasonState season)
+    {
+       
+    }
 }
