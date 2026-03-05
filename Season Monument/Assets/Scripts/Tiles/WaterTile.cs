@@ -1,9 +1,8 @@
-using System.Security.Cryptography.X509Certificates;
 using UnityEngine;
 
 public class WaterTile : Tile
 {
-
+    private static readonly int iceTransID = Shader.PropertyToID("_iceTrans");
     public override void OnEnable() 
     { 
         base.OnEnable(); 
@@ -19,22 +18,30 @@ public class WaterTile : Tile
     { 
         isWalkable = true;
         materialInstance.color = Color.white;
+        FreezeWater();
     }
 
     public override void OnSeasonChanged(SeasonState season) 
     {
         isWalkable = false;
         materialInstance.color = Color.blue;
+        materialInstance.SetFloat(iceTransID, 0f);
     }
 
     public override void Start()
     {
         base.Start();
+        materialInstance = GetComponent<Renderer>().material;
     }
 
-    // Update is called once per frame
     void Update()
     {
         
+    }
+
+    private void FreezeWater()
+    {
+        Debug.Log("Freezing water tile");
+        materialInstance.SetFloat(iceTransID, 1f);
     }
 }

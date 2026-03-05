@@ -4,57 +4,66 @@ using UnityEngine;
 
 public class PathFinder : MonoBehaviour
 {
-    public Tile startTile;
-    public Tile endTile;
-    private Tile tile;
+    [SerializeField] internal Tile startTile;
+    internal Tile endTile;
 
-    public PlayerMovement playerMovement;
+    private PlayerMovement playerMovement;
 
-    Queue <Tile> tileQueue = new Queue<Tile>();
+    private readonly Queue<Tile> tileQueue = new Queue<Tile>();
 
     private void Start()
     {
         playerMovement = GetComponent<PlayerMovement>();
     }
-    private void Update()
+
+    private void OnEnable()
     {
-        
+        SeasonEvents.OnSeasonChanged += OnSeasonChanged;
+    }
+
+    private void OnDisable()
+    {
+        SeasonEvents.OnSeasonChanged -= OnSeasonChanged;
+    }
+
+    private void OnSeasonChanged(SeasonState season)
+    {
+        if (startTile != null && endTile != null)
+        {
+            StartCoroutine(FindPathDelayed());
+        }
+    }
+
+    private IEnumerator FindPathDelayed()
+    {
+        yield return null; // Wait one frame for all tiles to update their walkable state
+        FindPath();
     }
 
     public void FindPath()
     {
-        
         tileQueue.Clear();
         ClearTiles();
         startTile.visited = true;
         tileQueue.Enqueue(startTile);
         while (tileQueue.Count > 0)
         {
-            
             Tile currentTile = tileQueue.Dequeue();
             if (currentTile.gameObject.GetInstanceID() == endTile.gameObject.GetInstanceID())
             {
-           
                 List<Tile> path = RetracePath(startTile, endTile);
                 playerMovement.setPath(path);
-                string s = "";
-                foreach (Tile t in path) s += t.name + " -> ";
-                
                 return;
             }
             foreach (GameObject neighbour in currentTile.neighbours)
             {
                 Tile neighbourTile = neighbour.GetComponent<Tile>();
-                
+
                 if (neighbourTile.isWalkable && neighbourTile.visited != true)
                 {
                     neighbourTile.visited = true;
                     neighbourTile.parent = currentTile;
                     tileQueue.Enqueue(neighbourTile);
-                   
-                   
-                    
-                    
                 }
             }
         }
@@ -62,14 +71,13 @@ public class PathFinder : MonoBehaviour
 
     public void ClearTiles()
     {
-        Tile[] allTiles = FindObjectsOfType<Tile>();
+        Tile[] allTiles = FindObjectsByType<Tile>(FindObjectsSortMode.None);
         foreach (Tile tile in allTiles)
         {
             tile.visited = false;
             tile.parent = null;
         }
     }
-
 
     public List<Tile> RetracePath(Tile start, Tile end)
     {
