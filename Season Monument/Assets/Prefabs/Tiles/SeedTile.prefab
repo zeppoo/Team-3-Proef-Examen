@@ -125,7 +125,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SeedTile
   tileData: {fileID: 0}
-  tileConnections: []
+  tileConnections:
+  - connectedTile: {fileID: 0}
+    bidirectional: 1
+    valid: 1
+    waypoint: {fileID: 0}
+    OnConnectionUsed:
+      m_PersistentCalls:
+        m_Calls: []
   overrideMesh: {fileID: 0}
   meshRotation: {x: 0, y: 0, z: 0}
-  tree: {fileID: 5449584456639435553, guid: bcccde43c413fff4bbac3bb7d404482a, type: 3}
+  tree: {fileID: 4204812839474018465, guid: 3d324d11043525245814b0ee368df9cb, type: 3}

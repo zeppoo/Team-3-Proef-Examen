@@ -35,7 +35,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        
+        Debug.Log(travelProgress);
         if (Input.touchCount > 0)
         {
             Touch touch = Input.GetTouch(0);
@@ -65,27 +65,31 @@ public class PlayerMovement : MonoBehaviour
             if (!(!hit.collider.CompareTag("Tile")))
             {
                 selectedTile = hit.collider.GetComponent<Tile>();
-                if (worldStateSwitch.CurrentState != WorldState.Gameplay)
+                if (worldStateSwitch.CurrentState == WorldState.Gameplay)
                 {
                     ActivateSeasonEffect(selectedTile);
                     return;
                 }
-                float topY = hit.collider.bounds.max.y + 1;
-                Vector3 currentposition = selectedTile.transform.position;
-
-                tile = selectedTile.GetComponent<Tile>();
-
-                pathFinder.endTile = selectedTile;
-                pathFinder.FindPath();
-
-                while (tile.parent != null)
+                else if (worldStateSwitch.CurrentState == WorldState.View)
                 {
-                    currentposition = tile.parent.transform.position;
-                    tile = tile.parent;
-                }
+                    float topY = hit.collider.bounds.max.y + 1;
+                    Vector3 currentposition = selectedTile.transform.position;
 
-               
+                    tile = selectedTile.GetComponent<Tile>();
+
+                    pathFinder.endTile = selectedTile;
+                    pathFinder.FindPath();
+
+                    while (tile.parent != null)
+                    {
+                        currentposition = tile.parent.transform.position;
+                        tile = tile.parent;
+                    }
+
+
+                }
             }
+                
         }
     }
 
@@ -96,6 +100,7 @@ public class PlayerMovement : MonoBehaviour
     }
     private void MovePlayer()
     {
+      //  Debug.Log("Current Path: " + (currentPath != null ? currentPath.Count.ToString() : "null") + ", Current Index: " + currentIndex);
         if (currentPath == null || currentPath.Count == 0)
             return;
 
@@ -129,12 +134,16 @@ public class PlayerMovement : MonoBehaviour
         if (travelProgress >= 1f)
         {
             transform.position = moveTarget;
+
+            // Update the current tile
+            currentTile = currentPath[currentIndex];
+
             isMoving = false;
             currentIndex++;
 
             if (currentIndex >= currentPath.Count)
             {
-                pathFinder.startTile = pathFinder.endTile;
+                pathFinder.startTile = currentTile;
                 currentPath = null;
                 currentIndex = 0;
             }
