@@ -7,10 +7,8 @@ public class EmptyTile : Tile
     public override bool isWalkable
     {
         get => _isWalkable;
-        protected set => _isWalkable = value;
+        set => _isWalkable = value;
     }
-
-    private bool _isWalkable = false;
 
     public override void Start()
     {

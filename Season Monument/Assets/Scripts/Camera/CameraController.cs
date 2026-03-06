@@ -27,6 +27,8 @@ public class CameraController : MonoBehaviour
     [Header("State")]
     [SerializeField] private CameraState startState = CameraState.NorthEast;
 
+    public static CameraState ActivePerspective { get; private set; } = CameraState.NorthEast;
+
     private int currentState = 0;
     private float currentYaw;
     private float targetYaw;
@@ -39,6 +41,7 @@ public class CameraController : MonoBehaviour
         if (!target) return;
 
         currentState = (int)startState;
+        ActivePerspective = (CameraState)currentState;
         currentYaw = targetYaw = currentState * -90f + 45f;
 
         float h = heightTarget != null ? heightTarget.position.y + heightOffset : target.position.y;
@@ -88,6 +91,7 @@ public class CameraController : MonoBehaviour
             currentState = (currentState + 1) % 4;
             targetYaw = currentState * -90f + 45f;
             UpdateTargetHeight();
+            UpdateActivePerspective();
             seasonStateManager.NextSeason();
         }
         else if (Keyboard.current.leftArrowKey.wasPressedThisFrame)
@@ -95,8 +99,14 @@ public class CameraController : MonoBehaviour
             currentState = (currentState + 3) % 4;
             targetYaw = currentState * -90f + 45f;
             UpdateTargetHeight();
+            UpdateActivePerspective();
             seasonStateManager.PreviousSeason();
         }
+    }
+
+    void UpdateActivePerspective()
+    {
+        ActivePerspective = (CameraState)currentState;
     }
 
     void UpdateTargetHeight()

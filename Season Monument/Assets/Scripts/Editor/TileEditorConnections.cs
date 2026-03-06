@@ -8,6 +8,16 @@ public static partial class TileEditor
     public static Tile ConnectionFirstTile { get; private set; }
     internal static bool ConnectionBidirectional = true;
 
+    // Selected connection
+    public static Tile SelectedConnectionTile { get; private set; }
+    public static TileConnection SelectedConnection { get; private set; }
+
+    public static void ClearSelectedConnection()
+    {
+        SelectedConnectionTile = null;
+        SelectedConnection = null;
+    }
+
     public static void CancelConnection()
     {
         ConnectionFirstTile = null;

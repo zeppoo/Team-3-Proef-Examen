@@ -6,7 +6,12 @@ public abstract class Tile : MonoBehaviour
     internal Tile parent;
     internal List<GameObject> neighbours = new List<GameObject>();
 
-    public virtual bool isWalkable { get; protected set; }
+    [SerializeField] protected bool _isWalkable = true;
+    public virtual bool isWalkable
+    {
+        get => _isWalkable;
+        set => _isWalkable = value;
+    }
     protected Material materialInstance;
 
     [SerializeField] private TileData tileData;
@@ -15,6 +20,10 @@ public abstract class Tile : MonoBehaviour
     [Header("Mesh Override")]
     [SerializeField] private Mesh overrideMesh;
     [SerializeField] private Vector3 meshRotation = Vector3.zero;
+
+    [Header("Decoration")]
+    [SerializeField] public bool hasDecoration = false;
+    [SerializeField] public GameObject decoration = null;
 
     internal bool visited;
 
@@ -42,7 +51,6 @@ public abstract class Tile : MonoBehaviour
         FindNeigbour();
         ApplyTileData();
         ValidateConnections();
-        ApplyTileConnections();
         ApplyMeshOverride();
     }
 
@@ -56,7 +64,6 @@ public abstract class Tile : MonoBehaviour
     {
         if (tileData == null) return;
 
-        isWalkable = tileData.isWalkable;
         materialInstance.color = tileData.tileColor;
     }
 
@@ -73,22 +80,20 @@ public abstract class Tile : MonoBehaviour
 
     public virtual void OnSeasonChanged(SeasonState season)
     {
-        if (tileData == null) return;
-
-        // Reset to defaults first
-        ApplyTileData();
-
-        // Apply season override if one exists
-        if (tileData.TryGetSeasonOverride(season, out SeasonOverride overrideData))
+        if (tileData != null)
         {
-            if (overrideData.overrideWalkable)
-                isWalkable = overrideData.isWalkable;
-            if (overrideData.overrideColor)
-                materialInstance.color = overrideData.tileColor;
+            ApplyTileData();
+
+            if (tileData.TryGetSeasonOverride(season, out SeasonOverride overrideData))
+            {
+                if (overrideData.overrideColor)
+                    materialInstance.color = overrideData.tileColor;
+            }
+
+            tileData.OnTileSeasonChanged?.Invoke(season);
         }
 
         ValidateConnections();
-        tileData.OnTileSeasonChanged?.Invoke(season);
     }
 
     public void TileEntered()
@@ -105,6 +110,7 @@ public abstract class Tile : MonoBehaviour
 
     public void ValidateConnections()
     {
+        CameraController.CameraState perspective = CameraController.ActivePerspective;
         foreach (TileConnection connection in tileConnections)
         {
             if (connection.connectedTile == null)
@@ -113,21 +119,28 @@ public abstract class Tile : MonoBehaviour
                 continue;
             }
 
-            connection.valid = isWalkable && connection.connectedTile.isWalkable;
-        }
-    }
+            bool wasValid = connection.valid;
+            connection.valid = isWalkable
+                && connection.connectedTile.isWalkable
+                && connection.IsActiveForPerspective(perspective);
 
-    private void ApplyTileConnections()
-    {
-        foreach (TileConnection connection in tileConnections)
-        {
-            if (connection.connectedTile == null || !connection.valid) continue;
+            if (connection.valid && !wasValid)
+            {
+                // Connection became valid: add to neighbours
+                if (!neighbours.Contains(connection.connectedTile.gameObject))
+                    neighbours.Add(connection.connectedTile.gameObject);
 
-            if (!neighbours.Contains(connection.connectedTile.gameObject))
-                neighbours.Add(connection.connectedTile.gameObject);
+                if (connection.bidirectional && !connection.connectedTile.neighbours.Contains(gameObject))
+                    connection.connectedTile.neighbours.Add(gameObject);
+            }
+            else if (!connection.valid && wasValid)
+            {
+                // Connection became invalid: remove from neighbours
+                neighbours.Remove(connection.connectedTile.gameObject);
 
-            if (connection.bidirectional && !connection.connectedTile.neighbours.Contains(gameObject))
-                connection.connectedTile.neighbours.Add(gameObject);
+                if (connection.bidirectional)
+                    connection.connectedTile.neighbours.Remove(gameObject);
+            }
         }
     }
 

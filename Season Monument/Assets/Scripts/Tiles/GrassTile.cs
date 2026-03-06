@@ -2,8 +2,6 @@ using UnityEngine;
 
 public class GrassTile : Tile
 {
-    public override bool isWalkable => true;
-
     public override void Start()
     {
         base.Start();

@@ -3,8 +3,6 @@ using UnityEngine;
 
 public class PathTile : Tile
 {
-    public override bool isWalkable => true;
-
     public override void Start()
     {
         base.Start();
