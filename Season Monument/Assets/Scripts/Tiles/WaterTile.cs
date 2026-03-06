@@ -2,7 +2,7 @@ using UnityEngine;
 
 public class WaterTile : Tile
 {
-    private static readonly int IceTransID = Shader.PropertyToID("_iceTrans");
+    private static readonly int iceTransID = Shader.PropertyToID("_iceTrans");
     public override void OnEnable() 
     { 
         base.OnEnable(); 
@@ -25,7 +25,7 @@ public class WaterTile : Tile
     {
         isWalkable = false;
         materialInstance.color = Color.blue;
-        materialInstance.SetFloat(IceTransID, 0f);
+        materialInstance.SetFloat(iceTransID, 0f);
     }
 
     public override void Start()
@@ -42,6 +42,6 @@ public class WaterTile : Tile
     private void FreezeWater()
     {
         Debug.Log("Freezing water tile");
-        materialInstance.SetFloat(IceTransID, 1f);
+        materialInstance.SetFloat(iceTransID, 1f);
     }
 }

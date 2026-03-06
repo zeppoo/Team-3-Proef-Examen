@@ -4,9 +4,10 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour
 {
-    private Tile currentTile;
-    private Tile selectedTile;
+    public Tile currentTile;
+    public Tile selectedTile;
     private PathFinder pathFinder;
+    private Tile tile;
 
     private List<Tile> currentPath = new List<Tile>();
     private int currentIndex = 0;
@@ -32,25 +33,61 @@ public class PlayerMovement : MonoBehaviour
 
     public void pointAndClick()
     {
-        Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-        if (!Physics.Raycast(ray, out RaycastHit hit)) return;
-        if (hit.collider.CompareTag("Tile"))
-        {
-            selectedTile = hit.collider.GetComponent<Tile>();
-            pathFinder.endTile = selectedTile;
-            pathFinder.FindPath();
-        }
+      
     }
 
     private void Update()
     {
-        if (Mouse.current.leftButton.wasPressedThisFrame)
+            
+        if (Input.touchCount > 0)
         {
-            pointAndClick();
+            Touch touch = Input.GetTouch(0);
+
+            if (touch.phase == UnityEngine.TouchPhase.Began)
+            {
+                HandleTap(touch.position);
+            }
+        }
+
+       
+        if (Input.GetMouseButtonDown(0))
+        {
+            HandleTap(Input.mousePosition);
         }
 
         MovePlayer();
     }
+
+
+    private void HandleTap(Vector2 screenPosition)
+    {
+        Ray ray = Camera.main.ScreenPointToRay(screenPosition);
+
+        if (Physics.Raycast(ray, out RaycastHit hit))
+        {
+            if (hit.collider.CompareTag("Tile"))
+            {
+                selectedTile = hit.collider.GetComponent<Tile>();
+
+                float topY = hit.collider.bounds.max.y + 1;
+                Vector3 currentposition = selectedTile.transform.position;
+
+                tile = selectedTile.GetComponent<Tile>();
+
+                pathFinder.endTile = selectedTile;
+                pathFinder.FindPath();
+
+                while (tile.parent != null)
+                {
+                    currentposition = tile.parent.transform.position;
+                    tile = tile.parent;
+                }
+
+                Debug.Log("Tile tapped: " + selectedTile.name);
+            }
+        }
+    }
+
 
     private void MovePlayer()
     {

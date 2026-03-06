@@ -42,6 +42,6 @@ Material:
     - _normalTreshold: 10
     - _thickness: 1
     m_Colors:
-    - _OutlineColor: {r: 0.51725876, g: 0.41568628, b: 0.81960785, a: 1}
+    - _OutlineColor: {r: 0.4528302, g: 0.4528302, b: 0.4528302, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
