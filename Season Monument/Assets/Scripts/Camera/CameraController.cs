@@ -11,6 +11,7 @@ public class CameraController : MonoBehaviour
     [Header("Dependencies")]
     [SerializeField] private SeasonStateManager seasonStateManager;
     [SerializeField] private Transform target;
+    private WorldStateSwitch worldStateSwitcher;
 
     [Header("Height")]
     [SerializeField] private Transform heightTarget;
@@ -29,6 +30,13 @@ public class CameraController : MonoBehaviour
     [Header("Swipe")]
     [SerializeField] private float minSwipeDistance = 100f;
 
+    [Header("Vertical Drag")]
+    [SerializeField] private float verticalDragSpeed = 0.01f;
+    [SerializeField] private float minDragToMove = 2f;
+
+    private Vector2 dragStartPos;
+    private bool isDragging = false;
+
     private Vector2 touchStartPos;
     private Vector2 touchEndPos;
 
@@ -44,6 +52,7 @@ public class CameraController : MonoBehaviour
         ActivePerspective = (CameraState)currentState;
         currentYaw = targetYaw = currentState * -90f + 45f;
         UpdateCameraPosition();
+        worldStateSwitcher = FindObjectOfType<WorldStateSwitch>();
     }
 
     private void Update()
@@ -54,6 +63,11 @@ public class CameraController : MonoBehaviour
         {
             HandleInput();
             HandleSwipe();
+            if(worldStateSwitcher.CurrentState == WorldStateSwitch.WorldState.Gameplay)
+            {
+                HandleVerticalDrag();
+            }
+                
 
             currentYaw = Mathf.LerpAngle(
                 currentYaw,
@@ -181,5 +195,75 @@ public class CameraController : MonoBehaviour
 
         transform.position = lookAtPos + offset;
         transform.LookAt(lookAtPos);
+    }
+
+
+
+    private void HandleVerticalDrag()
+    {
+        // TOUCH
+        if (Input.touchCount > 0)
+        {
+            Touch touch = Input.GetTouch(0);
+
+            if (touch.phase == UnityEngine.TouchPhase.Began)
+            {
+                dragStartPos = touch.position;
+                isDragging = true;
+            }
+            else if (touch.phase == UnityEngine.TouchPhase.Moved && isDragging)
+            {
+                ProcessVerticalDrag(touch.position);
+            }
+            else if (touch.phase == UnityEngine.TouchPhase.Ended || touch.phase == UnityEngine.TouchPhase.Canceled)
+            {
+                isDragging = false;
+            }
+
+            return;
+        }
+
+        // MOUSE
+        if (Input.GetMouseButtonDown(0))
+        {
+            dragStartPos = Input.mousePosition;
+            isDragging = true;
+        }
+        else if (Input.GetMouseButton(0) && isDragging)
+        {
+            ProcessVerticalDrag(Input.mousePosition);
+        }
+        else if (Input.GetMouseButtonUp(0))
+        {
+            isDragging = false;
+        }
+    }
+
+    private void ProcessVerticalDrag(Vector2 currentPos)
+    {
+        float deltaY = currentPos.y - dragStartPos.y;
+
+        if (Mathf.Abs(deltaY) < minDragToMove)
+            return;
+
+        ApplyVerticalMovement(deltaY);
+
+        dragStartPos = currentPos;
+    }
+
+    private void ApplyVerticalMovement(float deltaY)
+    {
+        float movement = deltaY * verticalDragSpeed;
+
+        if (heightTarget != null)
+        {
+            Vector3 pos = heightTarget.position;
+            pos.y += movement;
+            heightTarget.position = pos;
+        }
+        else
+        {
+            heightOffset += movement;
+        }
     }
 }

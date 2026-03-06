@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static WorldStateSwitch;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -12,33 +13,29 @@ public class PlayerMovement : MonoBehaviour
     private List<Tile> currentPath = new List<Tile>();
     private int currentIndex = 0;
 
-    private const float TRAVEL_TIME = 0.5f;
+    private const float travelTime = 0.5f;
     private float travelProgress = 0f;
     private Vector3 moveStart;
     private Vector3 moveTarget;
     private bool isMoving = false;
 
     private bool isConnectionMove = false;
+    private WorldStateSwitch worldStateSwitch;
+    private SeasonState season;
+    private SeasonStateManager seasonStateManager;
 
     private void Start()
     {
        pathFinder = GetComponent<PathFinder>();
         currentTile = pathFinder.startTile;
-    }
-    public void pointAndClick(InputAction.CallbackContext context)
-    {
-        if (!context.performed) return;
-        pointAndClick();
-    }
+        worldStateSwitch = FindObjectOfType<WorldStateSwitch>();
+        seasonStateManager = FindAnyObjectByType<SeasonStateManager>();
 
-    public void pointAndClick()
-    {
-      
     }
 
     private void Update()
     {
-            
+        Debug.Log(travelProgress);
         if (Input.touchCount > 0)
         {
             Touch touch = Input.GetTouch(0);
@@ -65,32 +62,45 @@ public class PlayerMovement : MonoBehaviour
 
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
-            if (hit.collider.CompareTag("Tile"))
+            if (!(!hit.collider.CompareTag("Tile")))
             {
                 selectedTile = hit.collider.GetComponent<Tile>();
-
-                float topY = hit.collider.bounds.max.y + 1;
-                Vector3 currentposition = selectedTile.transform.position;
-
-                tile = selectedTile.GetComponent<Tile>();
-
-                pathFinder.endTile = selectedTile;
-                pathFinder.FindPath();
-
-                while (tile.parent != null)
+                if (worldStateSwitch.CurrentState == WorldState.Gameplay)
                 {
-                    currentposition = tile.parent.transform.position;
-                    tile = tile.parent;
+                    ActivateSeasonEffect(selectedTile);
+                    return;
                 }
+                else if (worldStateSwitch.CurrentState == WorldState.View)
+                {
+                    float topY = hit.collider.bounds.max.y + 1;
+                    Vector3 currentposition = selectedTile.transform.position;
 
-                Debug.Log("Tile tapped: " + selectedTile.name);
+                    tile = selectedTile.GetComponent<Tile>();
+
+                    pathFinder.endTile = selectedTile;
+                    pathFinder.FindPath();
+
+                    while (tile.parent != null)
+                    {
+                        currentposition = tile.parent.transform.position;
+                        tile = tile.parent;
+                    }
+
+
+                }
             }
+                
         }
     }
 
-
+    private void ActivateSeasonEffect(Tile tile)
+    {
+        season = seasonStateManager.currentSeason;
+        tile.ActivateEffect(season);
+    }
     private void MovePlayer()
     {
+      //  Debug.Log("Current Path: " + (currentPath != null ? currentPath.Count.ToString() : "null") + ", Current Index: " + currentIndex);
         if (currentPath == null || currentPath.Count == 0)
             return;
 
@@ -117,26 +127,30 @@ public class PlayerMovement : MonoBehaviour
         }
         else
         {
-            travelProgress += Time.deltaTime / TRAVEL_TIME;
+            travelProgress += Time.deltaTime / travelTime;
             transform.position = Vector3.Lerp(moveStart, moveTarget, travelProgress);
         }
 
         if (travelProgress >= 1f)
         {
             transform.position = moveTarget;
+
+            // Update the current tile
+            currentTile = currentPath[currentIndex];
+
             isMoving = false;
             currentIndex++;
 
             if (currentIndex >= currentPath.Count)
             {
-                pathFinder.startTile = pathFinder.endTile;
+                pathFinder.startTile = currentTile;
                 currentPath = null;
                 currentIndex = 0;
             }
         }
     }
 
-    public void setPath(List<Tile> path)
+    public void SetPath(List<Tile> path)
     {
         if(path != null && path.Count > 0)
         {
