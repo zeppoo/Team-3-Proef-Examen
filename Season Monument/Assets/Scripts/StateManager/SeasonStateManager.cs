@@ -11,12 +11,12 @@ public enum SeasonState
 
 public class SeasonStateManager : MonoBehaviour
 {
-    [SerializeField] private SeasonState currentSeason = SeasonState.Spring;
+    [SerializeField] public SeasonState currentSeason;
 
     public void SetSeason(SeasonState newSeason)
     {
         currentSeason = newSeason;
-        Debug.Log("Season changed to: " + currentSeason);
+       // Debug.Log("Season changed to: " + currentSeason);
         SeasonEvents.RaiseSeasonChanged(currentSeason);
 
         switch (currentSeason)
