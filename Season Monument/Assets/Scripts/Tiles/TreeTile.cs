@@ -4,14 +4,20 @@ public class TreeTile : Tile
 {
     public override bool isWalkable { get => base.isWalkable; protected set => base.isWalkable = value; }
     private bool hasBeenActivated = false;
+    internal GameObject targetLocation;
 
+
+    public void SetTargetLoc(GameObject targetLoc)
+    {
+        targetLocation = targetLoc;
+    }
     public override void ActivateEffect(SeasonState season)
     {
         if(season == SeasonState.Autumn && hasBeenActivated == false)
         { 
             isWalkable = true;
             Debug.Log("Tree tile is now walkable in Autumn.");
-            transform.position = new Vector3(transform.position.x + 1f, transform.position.y - 1f, transform.position.z);
+            transform.position = targetLocation.transform.position;
             hasBeenActivated = true;
         }
         if(season == SeasonState.Summer)
@@ -39,6 +45,9 @@ public class TreeTile : Tile
 
     public override void Start()
     {
+ 
         base.Start();
     }
+
+   
 }

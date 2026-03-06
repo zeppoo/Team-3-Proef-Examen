@@ -4,13 +4,19 @@ public class SeedTile : Tile
 {
     public override bool isWalkable { get => base.isWalkable; protected set => base.isWalkable = value; }
     [SerializeField] private GameObject tree;
+    [SerializeField] private GameObject targetLoc;
+    private TreeTile treeTile;
 
     public override void ActivateEffect(SeasonState season)
     {
         Debug.Log(season);
         if (season == SeasonState.Spring)
         {
-            Instantiate(tree, new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z), Quaternion.identity, transform);
+            GameObject treeObj = Instantiate(tree, new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z), Quaternion.identity, transform);
+            treeTile = treeObj.GetComponent<TreeTile>();
+                treeTile.SetTargetLoc(targetLoc);
+               
+
         }
         base.ActivateEffect(season);
     }
@@ -27,7 +33,7 @@ public class SeedTile : Tile
 
     public override void Start()
     {
-        isWalkable = false;
+        
         base.Start();
     }
 
@@ -35,5 +41,10 @@ public class SeedTile : Tile
     {   
           
         base.OnSeasonChanged(season);
+    }
+
+    private void Update()
+    {
+        isWalkable = true;
     }
 }
