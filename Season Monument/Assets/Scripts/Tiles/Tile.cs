@@ -39,6 +39,7 @@ public abstract class Tile : MonoBehaviour
 
     public virtual void Start()
     {
+        GridManager.instance.RegisterTile(this);
         FindNeigbour();
         ApplyTileData();
         ValidateConnections();
@@ -75,10 +76,10 @@ public abstract class Tile : MonoBehaviour
     {
         if (tileData == null) return;
 
-        // Reset to defaults first
+        
         ApplyTileData();
 
-        // Apply season override if one exists
+      
         if (tileData.TryGetSeasonOverride(season, out SeasonOverride overrideData))
         {
             if (overrideData.overrideWalkable)
@@ -141,31 +142,38 @@ public abstract class Tile : MonoBehaviour
         return null;
     }
 
-    public void FindNeigbour()
-    {
-        Tile[] allTiles = FindObjectsByType<Tile>(FindObjectsSortMode.None);
-        BoxCollider col = gameObject.GetComponent<BoxCollider>();
-        float tileSize = col.bounds.size.x;
-
-        foreach (Tile tile in allTiles)
-        {
-            if (tile == this) continue;
-
-            Vector3 offset = tile.transform.position - transform.position;
-
-            // Only allow cardinal directions (exactly one axis differs)
-            int axisCount = 0;
-            if (Mathf.Abs(offset.x) > 0.01f) axisCount++;
-            if (Mathf.Abs(offset.y) > 0.01f) axisCount++;
-            if (Mathf.Abs(offset.z) > 0.01f) axisCount++;
-
-            if (axisCount == 1 && offset.magnitude <= tileSize + 0.1f)
-            {
-                neighbours.Add(tile.gameObject);
-            }
-        }
-    }
-
+     public void FindNeigbour()
+     {
+         Tile[] allTiles = FindObjectsByType<Tile>(FindObjectsSortMode.None);
+         BoxCollider col = gameObject.GetComponent<BoxCollider>();
+         
+         if (col == null)
+         {
+             Debug.LogError($"{gameObject.name} has no BoxCollider! Cannot find neighbors.");
+             return;
+         }
+         
+         float tileSize = col.bounds.size.x;
+    
+         foreach (Tile tile in allTiles)
+         {
+             if (tile == this) continue;
+    
+             Vector3 offset = tile.transform.position - transform.position;
+             Vector3 horizontalOffset = new Vector3(offset.x, 0, offset.z);
+             float horizontalDistance = horizontalOffset.magnitude;
+             float heightDifference = Mathf.Abs(offset.y);
+    
+             if (horizontalDistance <= tileSize * 1.6f && heightDifference <= 2f)
+             {
+                 if (!neighbours.Contains(tile.gameObject))
+                 {
+                     neighbours.Add(tile.gameObject);
+                 }
+             }
+         }
+     }
+    
    public virtual void ActivateEffect(SeasonState season)
     {
        
