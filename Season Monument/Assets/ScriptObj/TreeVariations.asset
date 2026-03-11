@@ -13,7 +13,7 @@ MonoBehaviour:
   m_Name: TreeVariations
   m_EditorClassIdentifier: Assembly-CSharp::AssetVariations
   seasonMaterial: {fileID: 2100000, guid: a0d0e73468db4a516a79035063a30450, type: 2}
-  springAlbedo: {fileID: 2800000, guid: 97c7f6ea755492d4f8ba69ae8ea506c3, type: 3}
-  summerAlbedo: {fileID: 2800000, guid: 2122ce59fcc5b0c4ab44cfd9f5a3fff8, type: 3}
-  autumnAlbedo: {fileID: 2800000, guid: d6a396b3cc51edd4a988c6a8ff36eaa0, type: 3}
-  winterAlbedo: {fileID: 2800000, guid: b57b90c3d91dbcf4dae8faa5420fc6b5, type: 3}
+  springAlbedo: {fileID: 2800000, guid: 1d63a0007f81c3445b5b1bcaf56ae70c, type: 3}
+  summerAlbedo: {fileID: 2800000, guid: 19d4c8462448598449fc10d8e87f6917, type: 3}
+  autumnAlbedo: {fileID: 2800000, guid: 78e1224858c642447b4c985107933d3f, type: 3}
+  winterAlbedo: {fileID: 2800000, guid: 9e128b07ee29d5f46810a032636e57b6, type: 3}

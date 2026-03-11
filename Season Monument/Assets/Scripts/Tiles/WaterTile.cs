@@ -40,7 +40,6 @@ public class WaterTile : Tile
        
         if (season == SeasonState.Winter)
         {
-           
             materialInstance.color = Color.white;
             isWalkable = true;
             materialInstance.SetFloat(iceTransID, 1f);
@@ -48,7 +47,6 @@ public class WaterTile : Tile
 
         if (season == SeasonState.Summer)
         {
-
             materialInstance.color = Color.blue;
             isWalkable = false;
             materialInstance.SetFloat(iceTransID, 0f);

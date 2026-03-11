@@ -40,6 +40,8 @@ public class CameraController : MonoBehaviour
     private Vector2 touchStartPos;
     private Vector2 touchEndPos;
 
+    public static CameraState ActivePerspective { get; private set; } = CameraState.NorthEast;
+
     private int currentState = 0;
     private float currentYaw;
     private float targetYaw;
@@ -63,7 +65,7 @@ public class CameraController : MonoBehaviour
         {
             HandleInput();
             HandleSwipe();
-            if(worldStateSwitcher.CurrentState == WorldStateSwitch.WorldState.Gameplay)
+            if(worldStateSwitcher != null && worldStateSwitcher.CurrentState == WorldStateSwitch.WorldState.Gameplay)
             {
                 HandleVerticalDrag();
             }
@@ -95,38 +97,19 @@ public class CameraController : MonoBehaviour
         {
             currentState = (currentState + 1) % 4;
             targetYaw = currentState * -90f + 45f;
-<<<<<<< HEAD
-            UpdateTargetHeight();
-            UpdateActivePerspective();
-            seasonStateManager.NextSeason();
-=======
+            ActivePerspective = (CameraState)currentState;
             if (seasonStateManager) seasonStateManager.NextSeason();
->>>>>>> aa89aeef36a53df168215ca016b5a227710a5f51
         }
         else if (Keyboard.current.leftArrowKey.wasPressedThisFrame)
         {
             currentState = (currentState + 3) % 4;
             targetYaw = currentState * -90f + 45f;
-<<<<<<< HEAD
-            UpdateTargetHeight();
-            UpdateActivePerspective();
-            seasonStateManager.PreviousSeason();
-        }
-    }
-
-    void UpdateActivePerspective()
-    {
-        ActivePerspective = (CameraState)currentState;
-    }
-
-    void UpdateTargetHeight()
-=======
+            ActivePerspective = (CameraState)currentState;
             if (seasonStateManager) seasonStateManager.PreviousSeason();
         }
     }
 
     private void HandleSwipe()
->>>>>>> aa89aeef36a53df168215ca016b5a227710a5f51
     {
         if (Input.touchCount > 0)
         {
@@ -167,12 +150,14 @@ public class CameraController : MonoBehaviour
         {
             currentState = (currentState + 1) % 4;
             targetYaw = currentState * -90f + 45f;
+            ActivePerspective = (CameraState)currentState;
             if (seasonStateManager) seasonStateManager.NextSeason();
         }
         else
         {
             currentState = (currentState + 3) % 4;
             targetYaw = currentState * -90f + 45f;
+            ActivePerspective = (CameraState)currentState;
             if (seasonStateManager) seasonStateManager.PreviousSeason();
         }
     }

@@ -7,7 +7,7 @@ public class DecorationController : MonoBehaviour
     void Awake()
     {
         if (assetVariations != null && assetVariations.seasonMaterial != null)
-            GetComponent<Renderer>().material = assetVariations.seasonMaterial;
+            GetComponentInChildren<Renderer>().material = assetVariations.seasonMaterial;
     }
 
     void OnEnable()

@@ -2,8 +2,7 @@ using UnityEngine;
 
 public class SeedTile : Tile
 {
-    public override bool isWalkable { get => base.isWalkable; protected set => base.isWalkable = value; }
-    [SerializeField] private GameObject tree;
+[SerializeField] private GameObject tree;
     [SerializeField] private GameObject targetLoc;
     private TreeTile treeTile;
 

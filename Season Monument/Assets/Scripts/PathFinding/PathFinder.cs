@@ -59,7 +59,19 @@ public class PathFinder : MonoBehaviour
             {
                 Tile neighbourTile = neighbour.GetComponent<Tile>();
 
-                if (neighbourTile.isWalkable && neighbourTile.visited != true)
+                if (neighbourTile.isWalkable && !neighbourTile.visited)
+                {
+                    neighbourTile.visited = true;
+                    neighbourTile.parent = currentTile;
+                    tileQueue.Enqueue(neighbourTile);
+                }
+            }
+
+            foreach (GameObject neighbour in currentTile.connectionNeighbours)
+            {
+                Tile neighbourTile = neighbour.GetComponent<Tile>();
+
+                if (neighbourTile.isWalkable && !neighbourTile.visited)
                 {
                     neighbourTile.visited = true;
                     neighbourTile.parent = currentTile;

@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &2035248501380817841
+--- !u!1 &3761154068718045125
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,49 +8,47 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 3648423654344063974}
-  - component: {fileID: 3072887893551798028}
-  - component: {fileID: 2139782505981198529}
-  - component: {fileID: 2848487418130601852}
-  - component: {fileID: 946102705968803528}
-  - component: {fileID: 4363919908296721756}
-  m_Layer: 6
-  m_Name: GrassTile
-  m_TagString: Tile
+  - component: {fileID: 1620863749632544239}
+  - component: {fileID: 4349998695539109605}
+  - component: {fileID: 5199727093151547490}
+  - component: {fileID: 2500493135298673079}
+  m_Layer: 0
+  m_Name: Quad
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &3648423654344063974
+--- !u!4 &1620863749632544239
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2035248501380817841}
+  m_GameObject: {fileID: 3761154068718045125}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0.5, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 4401403518073223759}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &3072887893551798028
+--- !u!33 &4349998695539109605
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2035248501380817841}
-  m_Mesh: {fileID: -2432090755550338912, guid: 04fc49a8dc8fcf24bba3efa8e8379f89, type: 3}
---- !u!23 &2139782505981198529
+  m_GameObject: {fileID: 3761154068718045125}
+  m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &5199727093151547490
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2035248501380817841}
+  m_GameObject: {fileID: 3761154068718045125}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -69,7 +67,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 348ed9136a02f8f67825d1e4652f19c9, type: 2}
+  - {fileID: 2100000, guid: 38c5a6eb617b543d5855379c39e3655d, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -92,13 +90,13 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &2848487418130601852
-BoxCollider:
+--- !u!64 &2500493135298673079
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2035248501380817841}
+  m_GameObject: {fileID: 3761154068718045125}
   m_Material: {fileID: 0}
   m_IncludeLayers:
     serializedVersion: 2
@@ -110,38 +108,53 @@ BoxCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &946102705968803528
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &6484461887410464689
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4401403518073223759}
+  - component: {fileID: 5811659409826453291}
+  m_Layer: 0
+  m_Name: Rock-3_Decoration
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4401403518073223759
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6484461887410464689}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 1
+  m_Children:
+  - {fileID: 1620863749632544239}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5811659409826453291
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2035248501380817841}
+  m_GameObject: {fileID: 6484461887410464689}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 375416049be5c6c909f7f1a40b82675a, type: 3}
+  m_Script: {fileID: 11500000, guid: aed50c9d75616a9fe89a2a87306f8b1a, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GrassTile
-  _isWalkable: 1
-  tileData: {fileID: 0}
-  tileConnections: []
-  overrideMesh: {fileID: 0}
-  meshRotation: {x: 0, y: 0, z: 0}
-  hasDecoration: 0
-  decoration: {fileID: 6484461887410464689, guid: 217c9e3c7657a86c189cd3c2406ced74, type: 3}
---- !u!114 &4363919908296721756
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2035248501380817841}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e5862d46268982aa08280aea55826d0e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SeasonTextureApplier
-  assetVariations: {fileID: 11400000, guid: cee3ea5e7024de940ba08cda073715df, type: 2}
+  m_EditorClassIdentifier: Assembly-CSharp::DecorationController
+  assetVariations: {fileID: 11400000, guid: b2dbdac43b12a534faad31e903b2e60c, type: 2}

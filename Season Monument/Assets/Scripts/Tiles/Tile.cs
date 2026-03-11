@@ -25,6 +25,7 @@ public abstract class Tile : MonoBehaviour
     [SerializeField] public bool hasDecoration = false;
     [SerializeField] public GameObject decoration = null;
 
+    internal List<GameObject> connectionNeighbours = new List<GameObject>();
     internal bool visited;
 
 
@@ -126,20 +127,18 @@ public abstract class Tile : MonoBehaviour
 
             if (connection.valid && !wasValid)
             {
-                // Connection became valid: add to neighbours
-                if (!neighbours.Contains(connection.connectedTile.gameObject))
-                    neighbours.Add(connection.connectedTile.gameObject);
+                if (!connectionNeighbours.Contains(connection.connectedTile.gameObject))
+                    connectionNeighbours.Add(connection.connectedTile.gameObject);
 
-                if (connection.bidirectional && !connection.connectedTile.neighbours.Contains(gameObject))
-                    connection.connectedTile.neighbours.Add(gameObject);
+                if (connection.bidirectional && !connection.connectedTile.connectionNeighbours.Contains(gameObject))
+                    connection.connectedTile.connectionNeighbours.Add(gameObject);
             }
             else if (!connection.valid && wasValid)
             {
-                // Connection became invalid: remove from neighbours
-                neighbours.Remove(connection.connectedTile.gameObject);
+                connectionNeighbours.Remove(connection.connectedTile.gameObject);
 
                 if (connection.bidirectional)
-                    connection.connectedTile.neighbours.Remove(gameObject);
+                    connection.connectedTile.connectionNeighbours.Remove(gameObject);
             }
         }
     }

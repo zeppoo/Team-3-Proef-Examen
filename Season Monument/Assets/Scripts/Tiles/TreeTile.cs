@@ -2,8 +2,7 @@ using UnityEngine;
 
 public class TreeTile : Tile
 {
-    public override bool isWalkable { get => base.isWalkable; protected set => base.isWalkable = value; }
-    private bool hasBeenActivated = false;
+private bool hasBeenActivated = false;
     internal GameObject targetLocation;
 
 

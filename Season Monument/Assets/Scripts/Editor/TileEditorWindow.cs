@@ -507,7 +507,7 @@ public class TileEditorWindow : EditorWindow
 
         GameObject instance = (GameObject)PrefabUtility.InstantiatePrefab(tile.decoration, tile.transform);
         instance.name = DecorationChildName;
-        instance.transform.localPosition = new Vector3(0f, 1f, 0f);
+        instance.transform.localPosition = new Vector3(0f, 0.5f, 0f);
         Undo.RegisterCreatedObjectUndo(instance, "Spawn Decoration");
     }
 

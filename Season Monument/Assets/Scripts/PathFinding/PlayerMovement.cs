@@ -35,7 +35,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log(travelProgress);
         if (Input.touchCount > 0)
         {
             Touch touch = Input.GetTouch(0);
@@ -65,12 +64,12 @@ public class PlayerMovement : MonoBehaviour
             if (!(!hit.collider.CompareTag("Tile")))
             {
                 selectedTile = hit.collider.GetComponent<Tile>();
-                if (worldStateSwitch.CurrentState == WorldState.Gameplay)
+                if (worldStateSwitch != null && worldStateSwitch.CurrentState == WorldState.Gameplay)
                 {
                     ActivateSeasonEffect(selectedTile);
                     return;
                 }
-                else if (worldStateSwitch.CurrentState == WorldState.View)
+                else if (worldStateSwitch != null && worldStateSwitch.CurrentState == WorldState.View)
                 {
                     float topY = hit.collider.bounds.max.y + 1;
                     Vector3 currentposition = selectedTile.transform.position;

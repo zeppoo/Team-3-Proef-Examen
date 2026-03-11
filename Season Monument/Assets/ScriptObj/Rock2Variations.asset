@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d23169016357e3f57b38dd918884a434, type: 3}
+  m_Name: Rock2Variations
+  m_EditorClassIdentifier: Assembly-CSharp::AssetVariations
+  seasonMaterial: {fileID: 2100000, guid: bfaaa0382933fac8d998701cb8979b4a, type: 2}
+  springAlbedo: {fileID: 2800000, guid: ef896c9b2f441df4a8165dad17dd50de, type: 3}
+  summerAlbedo: {fileID: 2800000, guid: ef896c9b2f441df4a8165dad17dd50de, type: 3}
+  autumnAlbedo: {fileID: 2800000, guid: 0b47c7fdb4656e145b5e9bd7a6e96221, type: 3}
+  winterAlbedo: {fileID: 2800000, guid: 0b47c7fdb4656e145b5e9bd7a6e96221, type: 3}
