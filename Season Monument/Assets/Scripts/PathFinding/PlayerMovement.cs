@@ -35,7 +35,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        Debug.Log(travelProgress);
         if (Input.touchCount > 0)
         {
             Touch touch = Input.GetTouch(0);
@@ -58,11 +57,14 @@ public class PlayerMovement : MonoBehaviour
 
     private void HandleTap(Vector2 screenPosition)
     {
+        if (currentPath != null && currentPath.Count > 0)
+            return;
+
         Ray ray = Camera.main.ScreenPointToRay(screenPosition);
 
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
-            if (!(!hit.collider.CompareTag("Tile")))
+            if (hit.collider.CompareTag("Tile"))
             {
                 selectedTile = hit.collider.GetComponent<Tile>();
                 if (worldStateSwitch.CurrentState == WorldState.Gameplay)
