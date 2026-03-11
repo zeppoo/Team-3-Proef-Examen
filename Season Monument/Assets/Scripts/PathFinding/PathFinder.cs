@@ -36,7 +36,7 @@ public class PathFinder : MonoBehaviour
 
     private IEnumerator FindPathDelayed()
     {
-        yield return null; // Wait one frame for all tiles to update their walkable state
+        yield return null; 
         FindPath();
     }
 
@@ -46,6 +46,9 @@ public class PathFinder : MonoBehaviour
         ClearTiles();
         startTile.visited = true;
         tileQueue.Enqueue(startTile);
+        
+        bool pathFound = false;
+        
         while (tileQueue.Count > 0)
         {
             Tile currentTile = tileQueue.Dequeue();
@@ -53,6 +56,7 @@ public class PathFinder : MonoBehaviour
             {
                 List<Tile> path = RetracePath(startTile, endTile);
                 playerMovement.SetPath(path);
+                pathFound = true;
                 return;
             }
             foreach (GameObject neighbour in currentTile.neighbours)
@@ -66,6 +70,11 @@ public class PathFinder : MonoBehaviour
                     tileQueue.Enqueue(neighbourTile);
                 }
             }
+        }
+        
+        if (!pathFound)
+        {
+            endTile = null;
         }
     }
 
