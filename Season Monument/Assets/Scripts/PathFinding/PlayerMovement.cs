@@ -57,11 +57,14 @@ public class PlayerMovement : MonoBehaviour
 
     private void HandleTap(Vector2 screenPosition)
     {
+        if (currentPath != null && currentPath.Count > 0)
+            return;
+
         Ray ray = Camera.main.ScreenPointToRay(screenPosition);
 
         if (Physics.Raycast(ray, out RaycastHit hit))
         {
-            if (!(!hit.collider.CompareTag("Tile")))
+            if (hit.collider.CompareTag("Tile"))
             {
                 selectedTile = hit.collider.GetComponent<Tile>();
                 if (worldStateSwitch != null && worldStateSwitch.CurrentState == WorldState.Gameplay)
