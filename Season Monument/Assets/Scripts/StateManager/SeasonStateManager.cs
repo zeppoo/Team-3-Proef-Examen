@@ -55,6 +55,16 @@ public class SeasonStateManager : MonoBehaviour
     }
 }
 
+public static class CameraEvents
+{
+    public static event Action<CameraController.CameraState> OnPerspectiveChanged;
+
+    public static void RaisePerspectiveChanged(CameraController.CameraState perspective)
+    {
+        OnPerspectiveChanged?.Invoke(perspective);
+    }
+}
+
 public static class SeasonEvents
 {
     public static event Action<SeasonState> OnSeasonChanged;

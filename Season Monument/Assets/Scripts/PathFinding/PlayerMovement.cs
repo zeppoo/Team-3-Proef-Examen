@@ -1,130 +1,85 @@
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using static WorldStateSwitch;
 
 public class PlayerMovement : MonoBehaviour
 {
     public Tile currentTile;
-    public Tile selectedTile;
-    private PathFinder pathFinder;
-    private Tile tile;
 
-    private List<Tile> currentPath = new List<Tile>();
-    private int currentIndex = 0;
+    private PathFinder pathFinder;
+    private List<Tile> currentPath;
+    private int currentIndex;
 
     private const float travelTime = 0.5f;
-    private float travelProgress = 0f;
+    private float travelProgress;
     private Vector3 moveStart;
     private Vector3 moveTarget;
-    private bool isMoving = false;
+    private bool isMoving;
 
-    private bool isConnectionMove = false;
     private WorldStateSwitch worldStateSwitch;
-    private SeasonState season;
     private SeasonStateManager seasonStateManager;
 
     private void Start()
     {
-       pathFinder = GetComponent<PathFinder>();
+        pathFinder = GetComponent<PathFinder>();
         currentTile = pathFinder.startTile;
-        worldStateSwitch = FindObjectOfType<WorldStateSwitch>();
+        worldStateSwitch = FindFirstObjectByType<WorldStateSwitch>();
         seasonStateManager = FindAnyObjectByType<SeasonStateManager>();
-
     }
 
     private void Update()
     {
-        if (Input.touchCount > 0)
-        {
-            Touch touch = Input.GetTouch(0);
-
-            if (touch.phase == UnityEngine.TouchPhase.Began)
-            {
-                HandleTap(touch.position);
-            }
-        }
-
-       
-        if (Input.GetMouseButtonDown(0))
-        {
+        if (Input.touchCount > 0 && Input.GetTouch(0).phase == UnityEngine.TouchPhase.Began)
+            HandleTap(Input.GetTouch(0).position);
+        else if (Input.GetMouseButtonDown(0))
             HandleTap(Input.mousePosition);
-        }
 
         MovePlayer();
     }
 
-
     private void HandleTap(Vector2 screenPosition)
     {
-        if (currentPath != null && currentPath.Count > 0)
-            return;
+        // Block input while moving
+        if (currentPath != null && currentPath.Count > 0) return;
 
         Ray ray = Camera.main.ScreenPointToRay(screenPosition);
+        if (!Physics.Raycast(ray, out RaycastHit hit)) return;
+        if (!hit.collider.CompareTag("Tile")) return;
 
-        if (Physics.Raycast(ray, out RaycastHit hit))
+        Tile tappedTile = hit.collider.GetComponent<Tile>();
+        if (tappedTile == null) return;
+
+        if (worldStateSwitch != null && worldStateSwitch.CurrentState == WorldState.Gameplay)
         {
-            if (hit.collider.CompareTag("Tile"))
-            {
-                selectedTile = hit.collider.GetComponent<Tile>();
-                if (worldStateSwitch.CurrentState == WorldState.Gameplay)
-                {
-                    ActivateSeasonEffect(selectedTile);
-                    return;
-                }
-                else if (worldStateSwitch.CurrentState == WorldState.View)
-                {
-                    float topY = hit.collider.bounds.max.y + 1;
-                    Vector3 currentposition = selectedTile.transform.position;
+            tappedTile.ActivateEffect(seasonStateManager.currentSeason);
+            return;
+        }
 
-                    tile = selectedTile.GetComponent<Tile>();
-
-                    pathFinder.endTile = selectedTile;
-                    pathFinder.FindPath();
-
-                    while (tile.parent != null)
-                    {
-                        currentposition = tile.parent.transform.position;
-                        tile = tile.parent;
-                    }
-
-
-                }
-            }
-                
+        if (worldStateSwitch != null && worldStateSwitch.CurrentState == WorldState.View)
+        {
+            pathFinder.endTile = tappedTile;
+            pathFinder.FindPath();
         }
     }
 
-    private void ActivateSeasonEffect(Tile tile)
-    {
-        season = seasonStateManager.currentSeason;
-        tile.ActivateEffect(season);
-    }
     private void MovePlayer()
     {
-      //  Debug.Log("Current Path: " + (currentPath != null ? currentPath.Count.ToString() : "null") + ", Current Index: " + currentIndex);
-        if (currentPath == null || currentPath.Count == 0)
-            return;
+        if (currentPath == null || currentPath.Count == 0) return;
 
         if (!isMoving)
         {
             moveStart = transform.position;
-            Vector3 tilePos = currentPath[currentIndex].transform.position;
-            BoxCollider tileCollider = currentPath[currentIndex].GetComponent<BoxCollider>();
-            float topY = tileCollider != null ? tileCollider.bounds.max.y : tilePos.y;
-            moveTarget = new Vector3(tilePos.x, topY, tilePos.z);
+            moveTarget = currentPath[currentIndex].transform.position;
             travelProgress = 0f;
             isMoving = true;
-
-            // Check if this step uses a tile connection
-            Tile previousTile = currentIndex > 0 ? currentPath[currentIndex - 1] : currentTile;
-            isConnectionMove = previousTile != null && previousTile.GetConnectionTo(currentPath[currentIndex]) != null;
         }
 
-        if (isConnectionMove)
+        // Teleport instantly over tile connections, lerp over normal steps
+        Tile previousTile = currentIndex > 0 ? currentPath[currentIndex - 1] : currentTile;
+        bool isConnectionStep = previousTile != null && previousTile.GetConnectionTo(currentPath[currentIndex]) != null;
+
+        if (isConnectionStep)
         {
-            // Instant teleport over connections
-            transform.position = moveTarget;
             travelProgress = 1f;
         }
         else
@@ -136,11 +91,7 @@ public class PlayerMovement : MonoBehaviour
         if (travelProgress >= 1f)
         {
             transform.position = moveTarget;
-
-            // Update the current tile
             currentTile = currentPath[currentIndex];
-
-            isMoving = false;
             currentIndex++;
 
             if (currentIndex >= currentPath.Count)
@@ -148,21 +99,25 @@ public class PlayerMovement : MonoBehaviour
                 pathFinder.startTile = currentTile;
                 currentPath = null;
                 currentIndex = 0;
+                isMoving = false;
+            }
+            else
+            {
+                isMoving = false;
             }
         }
     }
 
     public void SetPath(List<Tile> path)
     {
-        if(path != null && path.Count > 0)
-        {
-            if (path[0] == pathFinder.startTile && path.Count > 1)
-                path.RemoveAt(0);
+        if (path == null || path.Count == 0) return;
 
-            currentPath = new List<Tile>(path);
-            currentIndex = 0;
-            isMoving = false;
-        }
+        // Strip the start tile if it's the first step
+        if (path[0] == pathFinder.startTile && path.Count > 1)
+            path.RemoveAt(0);
 
+        currentPath = path;
+        currentIndex = 0;
+        isMoving = false;
     }
 }

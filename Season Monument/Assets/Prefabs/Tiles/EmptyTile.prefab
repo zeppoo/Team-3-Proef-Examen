@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8130217546501225942}
   - component: {fileID: -6384887059440083961}
   m_Layer: 0
-  m_Name: 'EmptyTile '
+  m_Name: EmptyTile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -29,7 +29,7 @@ Transform:
   m_GameObject: {fileID: 1738251906069139368}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 10.36, y: 13.86, z: 4.69}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -124,9 +124,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8523652b476a2721db68dc6650271ed3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EmptyTile
-  parent: {fileID: 0}
-  connecetdTile: {fileID: 0}
-  neighbours: []
   tileData: {fileID: 0}
   tileConnections: []
   overrideMesh: {fileID: 0}

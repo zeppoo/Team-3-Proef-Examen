@@ -1,12 +1,14 @@
-using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
 public class WorldStateSwitch : MonoBehaviour
 {
     [SerializeField] private Canvas canvas;
-    [SerializeField] private Button switchButton;
-    [SerializeField] private Image displayImage;
+    [SerializeField] private Image buttonIcon;
+
+    [Header("Icons")]
+    [SerializeField] private Sprite gameplayIcon;
+    [SerializeField] private Sprite viewIcon;
 
     public WorldState CurrentState { get; private set; } = WorldState.Gameplay;
     public enum WorldState
@@ -14,6 +16,12 @@ public class WorldStateSwitch : MonoBehaviour
         Gameplay = 0,
         View = 1
     }
+
+    private void Start()
+    {
+        UpdateDisplay();
+    }
+
     public void SwitchWorldState()
     {
         CurrentState = CurrentState == WorldState.Gameplay
@@ -23,18 +31,8 @@ public class WorldStateSwitch : MonoBehaviour
         UpdateDisplay();
     }
 
-
     private void UpdateDisplay()
     {
-        if (CurrentState == WorldState.Gameplay)
-        {
-            displayImage.color = Color.green;
-            switchButton.GetComponentInChildren<TMP_Text>().text = "Switch to View";
-        }
-        else
-        {
-            displayImage.color = Color.blue;
-            switchButton.GetComponentInChildren<TMP_Text>().text = "Switch to Gameplay";
-        }
+        buttonIcon.sprite = CurrentState == WorldState.Gameplay ? gameplayIcon : viewIcon;
     }
 }

@@ -4,6 +4,7 @@ using UnityEngine.InputSystem;
 using UnityEngine;
 
 [ExecuteInEditMode]
+[DefaultExecutionOrder(-200)]
 public class CameraController : MonoBehaviour
 {
     public enum CameraState { NorthEast, SouthEast, SouthWest, NorthWest }
@@ -40,18 +41,29 @@ public class CameraController : MonoBehaviour
     private Vector2 touchStartPos;
     private Vector2 touchEndPos;
 
+    public static CameraState ActivePerspective { get; private set; } = CameraState.NorthEast;
+
+    private void Awake()
+    {
+        currentState = (int)startState;
+        ActivePerspective = (CameraState)currentState;
+    }
+
     private int currentState = 0;
     private float currentYaw;
     private float targetYaw;
+    private float lockedHeightY;
 
     private void Start()
     {
         if (!target) return;
 
         currentState = (int)startState;
+        ActivePerspective = (CameraState)currentState;
         currentYaw = targetYaw = currentState * -90f + 45f;
+        lockedHeightY = heightTarget != null ? heightTarget.position.y : 0f;
         UpdateCameraPosition();
-        worldStateSwitcher = FindObjectOfType<WorldStateSwitch>();
+        worldStateSwitcher = FindFirstObjectByType<WorldStateSwitch>();
     }
 
     private void Update()
@@ -62,7 +74,7 @@ public class CameraController : MonoBehaviour
         {
             HandleInput();
             HandleSwipe();
-            if(worldStateSwitcher.CurrentState == WorldStateSwitch.WorldState.Gameplay)
+            if(worldStateSwitcher != null && worldStateSwitcher.CurrentState == WorldStateSwitch.WorldState.Gameplay)
             {
                 HandleVerticalDrag();
             }
@@ -82,6 +94,7 @@ public class CameraController : MonoBehaviour
     {
         if (!target) return;
         currentState = (int)startState;
+        ActivePerspective = (CameraState)currentState;
         currentYaw = targetYaw = currentState * -90f + 45f;
         UpdateCameraPosition();
     }
@@ -94,12 +107,18 @@ public class CameraController : MonoBehaviour
         {
             currentState = (currentState + 1) % 4;
             targetYaw = currentState * -90f + 45f;
+            ActivePerspective = (CameraState)currentState;
+            lockedHeightY = heightTarget != null ? heightTarget.position.y : lockedHeightY;
+            CameraEvents.RaisePerspectiveChanged(ActivePerspective);
             if (seasonStateManager) seasonStateManager.NextSeason();
         }
         else if (Keyboard.current.leftArrowKey.wasPressedThisFrame)
         {
             currentState = (currentState + 3) % 4;
             targetYaw = currentState * -90f + 45f;
+            ActivePerspective = (CameraState)currentState;
+            lockedHeightY = heightTarget != null ? heightTarget.position.y : lockedHeightY;
+            CameraEvents.RaisePerspectiveChanged(ActivePerspective);
             if (seasonStateManager) seasonStateManager.PreviousSeason();
         }
     }
@@ -145,12 +164,18 @@ public class CameraController : MonoBehaviour
         {
             currentState = (currentState + 1) % 4;
             targetYaw = currentState * -90f + 45f;
+            ActivePerspective = (CameraState)currentState;
+            lockedHeightY = heightTarget != null ? heightTarget.position.y : lockedHeightY;
+            CameraEvents.RaisePerspectiveChanged(ActivePerspective);
             if (seasonStateManager) seasonStateManager.NextSeason();
         }
         else
         {
             currentState = (currentState + 3) % 4;
             targetYaw = currentState * -90f + 45f;
+            ActivePerspective = (CameraState)currentState;
+            lockedHeightY = heightTarget != null ? heightTarget.position.y : lockedHeightY;
+            CameraEvents.RaisePerspectiveChanged(ActivePerspective);
             if (seasonStateManager) seasonStateManager.PreviousSeason();
         }
     }
@@ -160,7 +185,7 @@ public class CameraController : MonoBehaviour
         Vector3 lookAtPos = target.position;
 
         if (heightTarget != null)
-            lookAtPos.y = heightTarget.position.y + heightOffset;
+            lookAtPos.y = lockedHeightY + heightOffset;
 
         float yawRad = currentYaw * Mathf.Deg2Rad;
         float pitchRad = isometricPitch * Mathf.Deg2Rad;

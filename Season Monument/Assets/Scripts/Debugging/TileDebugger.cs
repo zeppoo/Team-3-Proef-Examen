@@ -136,7 +136,7 @@ public class TileDebugger : EditorWindow
                     if (conn.connectedTile != null)
                     {
                         string validLabel = conn.valid ? "valid" : "invalid";
-                        EditorGUILayout.LabelField($"-> {conn.connectedTile.gameObject.name} ({(conn.bidirectional ? "bi" : "one-way")}, {validLabel})");
+                        EditorGUILayout.LabelField($"-> {conn.connectedTile.gameObject.name} ({validLabel})");
                     }
                 }
                 EditorGUI.indentLevel--;
@@ -155,55 +155,9 @@ public class TileDebugger : EditorWindow
     private void FindAllNeighbours(Tile[] allTiles)
     {
         foreach (Tile tile in allTiles)
-        {
-            tile.neighbours.Clear();
-        }
+            tile.FindNeigbour();
 
-        // Find cardinal neighbours (6 directions)
-        foreach (Tile tile in allTiles)
-        {
-            foreach (Tile other in allTiles)
-            {
-                if (other == tile) continue;
-
-                Vector3 offset = other.transform.position - tile.transform.position;
-
-                // Only match cardinal directions (X, Y, Z axis-aligned), not diagonal
-                int axisCount = 0;
-                if (Mathf.Abs(offset.x) > 0.01f) axisCount++;
-                if (Mathf.Abs(offset.y) > 0.01f) axisCount++;
-                if (Mathf.Abs(offset.z) > 0.01f) axisCount++;
-
-                if (axisCount == 1 && offset.magnitude <= TILE_SIZE + 0.1f)
-                {
-                    tile.neighbours.Add(other.gameObject);
-                }
-            }
-        }
-
-        // Also add valid tile connections as neighbours
-        int connectionCount = 0;
-        foreach (Tile tile in allTiles)
-        {
-            foreach (TileConnection connection in tile.tileConnections)
-            {
-                if (connection.connectedTile == null || !connection.valid) continue;
-
-                if (!tile.neighbours.Contains(connection.connectedTile.gameObject))
-                {
-                    tile.neighbours.Add(connection.connectedTile.gameObject);
-                    connectionCount++;
-                }
-
-                if (connection.bidirectional && !connection.connectedTile.neighbours.Contains(tile.gameObject))
-                {
-                    connection.connectedTile.neighbours.Add(tile.gameObject);
-                    connectionCount++;
-                }
-            }
-        }
-
-        Debug.Log($"[TileDebugger] Found neighbours for {allTiles.Length} tiles. Added {connectionCount} connection links.");
+        Debug.Log($"[TileDebugger] Rebuilt neighbours for {allTiles.Length} tiles.");
     }
 
     private void OnSceneGUI(SceneView sceneView)
@@ -231,13 +185,10 @@ public class TileDebugger : EditorWindow
 
             if (showNeighbourLines)
             {
-                foreach (GameObject neighbour in tile.neighbours)
+                foreach (Tile neighbour in tile.neighbours)
                 {
                     if (neighbour == null) continue;
-
-                    Tile neighbourTile = neighbour.GetComponent<Tile>();
-                    Handles.color = (neighbourTile != null && !neighbourTile.isWalkable) ? Color.red : Color.green;
-
+                    Handles.color = neighbour.isWalkable ? Color.green : Color.red;
                     Vector3 neighbourPos = neighbour.transform.position + Vector3.up * gizmoHeight;
                     Handles.DrawLine(position, neighbourPos, neighbourLineThickness);
                 }
@@ -248,17 +199,17 @@ public class TileDebugger : EditorWindow
                 foreach (TileConnection connection in tile.tileConnections)
                 {
                     if (connection.connectedTile == null) continue;
+                    if (tile.GetInstanceID() > connection.connectedTile.GetInstanceID()) continue;
 
-                    bool isValid = tile.isWalkable && connection.connectedTile.isWalkable;
-                    Handles.color = isValid ? Color.blue : Color.red;
+                    Handles.color = connection.valid ? Color.blue : Color.red;
                     Vector3 connPos = connection.connectedTile.transform.position + Vector3.up * gizmoHeight;
                     Handles.DrawLine(position, connPos, neighbourLineThickness);
 
-                    // Draw midpoint sphere
                     Vector3 mid = (position + connPos) * 0.5f;
                     Handles.SphereHandleCap(0, mid, Quaternion.identity, gizmoSize, EventType.Repaint);
                 }
             }
+
         }
     }
 }

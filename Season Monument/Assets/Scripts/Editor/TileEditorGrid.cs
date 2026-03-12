@@ -46,7 +46,6 @@ public static partial class TileEditor
         if (mode == TileEditorWindow.ToolMode.Connect)
         {
             HandleConnectMode(e, grid);
-            DrawExistingConnections();
             sceneView.Repaint();
             return;
         }
@@ -54,7 +53,6 @@ public static partial class TileEditor
         if (mode == TileEditorWindow.ToolMode.DeleteConnection)
         {
             HandleDeleteConnectionMode(e);
-            DrawExistingConnections();
             sceneView.Repaint();
             return;
         }
@@ -100,21 +98,69 @@ public static partial class TileEditor
 
     private static void HandleSelectMode(Event e)
     {
+        DrawSelectedConnectionHighlight();
+
         if (e.type != EventType.MouseDown || e.button != 0) return;
 
         Vector2 mousePos = e.mousePosition;
         Ray ray = HandleUtility.GUIPointToWorldRay(mousePos);
 
+        // Check for connection midpoint click first
+        Tile[] allTiles = Object.FindObjectsByType<Tile>(FindObjectsSortMode.None);
+        float closestDist = 0.4f; // click threshold
+        Tile bestTile = null;
+        TileConnection bestConn = null;
+
+        foreach (Tile tile in allTiles)
+        {
+            foreach (TileConnection conn in tile.tileConnections)
+            {
+                if (conn.connectedTile == null) continue;
+                Vector3 mid = (tile.transform.position + conn.connectedTile.transform.position) * 0.5f + Vector3.up * 0.5f;
+                float dist = Vector3.Cross(ray.direction, mid - ray.origin).magnitude;
+                if (dist < closestDist)
+                {
+                    closestDist = dist;
+                    bestTile = tile;
+                    bestConn = conn;
+                }
+            }
+        }
+
+        if (bestConn != null)
+        {
+            SelectedConnectionTile = bestTile;
+            SelectedConnection = bestConn;
+            e.Use();
+            return;
+        }
+
+        // Fall back to tile selection
         int layerMask = 1 << TILE_LAYER;
         if (Physics.Raycast(ray, out RaycastHit hit, 1000f, layerMask))
         {
             GameObject hitObj = hit.collider.gameObject;
             if (hitObj.CompareTag("Tile"))
             {
+                ClearSelectedConnection();
                 Selection.activeGameObject = hitObj;
                 e.Use();
             }
         }
+    }
+
+    private static void DrawSelectedConnectionHighlight()
+    {
+        if (SelectedConnection == null || SelectedConnectionTile == null) return;
+        if (SelectedConnection.connectedTile == null) return;
+
+        Vector3 from = SelectedConnectionTile.transform.position + Vector3.up * 0.5f;
+        Vector3 to = SelectedConnection.connectedTile.transform.position + Vector3.up * 0.5f;
+        Vector3 mid = (from + to) * 0.5f;
+
+        Handles.color = Color.yellow;
+        Handles.DrawLine(from, to, 5f);
+        Handles.SphereHandleCap(0, mid, Quaternion.identity, 0.2f, EventType.Repaint);
     }
 
     internal struct RaycastResult

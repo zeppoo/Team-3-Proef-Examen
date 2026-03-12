@@ -6,7 +6,16 @@ public static partial class TileEditor
 {
     // Connection mode state
     public static Tile ConnectionFirstTile { get; private set; }
-    internal static bool ConnectionBidirectional = true;
+
+    // Selected connection
+    public static Tile SelectedConnectionTile { get; private set; }
+    public static TileConnection SelectedConnection { get; private set; }
+
+    public static void ClearSelectedConnection()
+    {
+        SelectedConnectionTile = null;
+        SelectedConnection = null;
+    }
 
     public static void CancelConnection()
     {
@@ -59,7 +68,7 @@ public static partial class TileEditor
                     else if (hoveredTile != ConnectionFirstTile)
                     {
                         // Create connection between first and second tile
-                        CreateConnection(ConnectionFirstTile, hoveredTile, ConnectionBidirectional);
+                        CreateConnection(ConnectionFirstTile, hoveredTile);
                         ConnectionFirstTile = null;
                     }
                     e.Use();
@@ -89,54 +98,36 @@ public static partial class TileEditor
         }
     }
 
-    private static void CreateConnection(Tile from, Tile to, bool bidirectional)
+    private static void CreateConnection(Tile from, Tile to)
     {
-        // Check if connection already exists
+        bool fromExists = false;
+        bool toExists = false;
         foreach (TileConnection existing in from.tileConnections)
+            if (existing.connectedTile == to) { fromExists = true; break; }
+        foreach (TileConnection existing in to.tileConnections)
+            if (existing.connectedTile == from) { toExists = true; break; }
+
+        if (fromExists && toExists)
         {
-            if (existing.connectedTile == to)
-            {
-                Debug.LogWarning($"Connection already exists from {from.gameObject.name} to {to.gameObject.name}");
-                return;
-            }
+            Debug.LogWarning($"Connection already exists between {from.gameObject.name} and {to.gameObject.name}");
+            return;
         }
 
-        Undo.RecordObject(from, "Create Tile Connection");
-        TileConnection connection = new TileConnection
+        if (!fromExists)
         {
-            connectedTile = to,
-            bidirectional = bidirectional
-        };
-        from.tileConnections.Add(connection);
-        EditorUtility.SetDirty(from);
-
-        // If bidirectional, also add the reverse connection on the other tile
-        if (bidirectional)
-        {
-            bool reverseExists = false;
-            foreach (TileConnection existing in to.tileConnections)
-            {
-                if (existing.connectedTile == from)
-                {
-                    reverseExists = true;
-                    break;
-                }
-            }
-
-            if (!reverseExists)
-            {
-                Undo.RecordObject(to, "Create Tile Connection");
-                TileConnection reverse = new TileConnection
-                {
-                    connectedTile = from,
-                    bidirectional = bidirectional
-                };
-                to.tileConnections.Add(reverse);
-                EditorUtility.SetDirty(to);
-            }
+            Undo.RecordObject(from, "Create Tile Connection");
+            from.tileConnections.Add(new TileConnection { connectedTile = to });
+            EditorUtility.SetDirty(from);
         }
 
-        Debug.Log($"Connected {from.gameObject.name} <-> {to.gameObject.name} (bidirectional: {bidirectional})");
+        if (!toExists)
+        {
+            Undo.RecordObject(to, "Create Tile Connection");
+            to.tileConnections.Add(new TileConnection { connectedTile = from });
+            EditorUtility.SetDirty(to);
+        }
+
+        Debug.Log($"Connected {from.gameObject.name} <-> {to.gameObject.name}");
     }
 
     private static void DrawExistingConnections()
@@ -159,8 +150,7 @@ public static partial class TileEditor
                 if (drawn.Contains(key)) continue;
                 drawn.Add(key);
 
-                bool isValid = tile.isWalkable && connection.connectedTile.isWalkable;
-                Handles.color = isValid ? Color.blue : Color.red;
+                Handles.color = connection.valid ? Color.blue : Color.red;
 
                 Vector3 from = tile.transform.position + Vector3.up * 0.5f;
                 Vector3 to = connection.connectedTile.transform.position + Vector3.up * 0.5f;

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[DefaultExecutionOrder(-100)]
 public class GridManager : MonoBehaviour
 {
     public static GridManager instance;
@@ -64,10 +65,11 @@ public class GridManager : MonoBehaviour
 
             if (grid.TryGetValue(neighbourCoord, out Tile neighbour))
             {
-                tile.neighbours.Add(neighbour.gameObject);
+                if (!tile.neighbours.Contains(neighbour))
+                    tile.neighbours.Add(neighbour);
 
-                if (!neighbour.neighbours.Contains(tile.gameObject))
-                    neighbour.neighbours.Add(tile.gameObject);
+                if (!neighbour.neighbours.Contains(tile))
+                    neighbour.neighbours.Add(tile);
             }
         }
     }
@@ -97,17 +99,6 @@ public class GridManager : MonoBehaviour
         foreach (Tile t in tiles)
         {
             t.ValidateConnections();
-            
-            foreach (TileConnection connection in t.tileConnections)
-            {
-                if (connection.connectedTile == null || !connection.valid) continue;
-
-                if (!t.neighbours.Contains(connection.connectedTile.gameObject))
-                    t.neighbours.Add(connection.connectedTile.gameObject);
-
-                if (connection.bidirectional && !connection.connectedTile.neighbours.Contains(t.gameObject))
-                    connection.connectedTile.neighbours.Add(t.gameObject);
-            }
         }
     }
 }
