@@ -18,6 +18,7 @@ public class PlayerMovement : MonoBehaviour
 
     private WorldStateSwitch worldStateSwitch;
     private SeasonStateManager seasonStateManager;
+    private AnimationController animationController;
 
     private void Start()
     {
@@ -25,6 +26,7 @@ public class PlayerMovement : MonoBehaviour
         currentTile = pathFinder.startTile;
         worldStateSwitch = FindFirstObjectByType<WorldStateSwitch>();
         seasonStateManager = FindAnyObjectByType<SeasonStateManager>();
+        animationController = GetComponent<AnimationController>();
     }
 
     private void Update()
@@ -35,6 +37,11 @@ public class PlayerMovement : MonoBehaviour
             HandleTap(Input.mousePosition);
 
         MovePlayer();
+
+        if(isMoving)
+            animationController.SetWalking(true);
+        else
+            animationController.SetWalking(false);
     }
 
     private void HandleTap(Vector2 screenPosition)
