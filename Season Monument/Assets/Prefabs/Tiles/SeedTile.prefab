@@ -124,15 +124,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 84b6ee8a7b9da434fae9d634eb5d217e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SeedTile
-  tileData: {fileID: 0}
+  _isWalkable: 1
   tileConnections:
   - connectedTile: {fileID: 0}
-    bidirectional: 1
+    activePerspectives: 15
     valid: 1
-    waypoint: {fileID: 0}
     OnConnectionUsed:
       m_PersistentCalls:
         m_Calls: []
   overrideMesh: {fileID: 0}
   meshRotation: {x: 0, y: 0, z: 0}
+  hasDecoration: 0
+  decoration: {fileID: 6484461887410464689, guid: c4aea3e249e3b31d892644f9c305a875, type: 3}
   tree: {fileID: 4204812839474018465, guid: 3d324d11043525245814b0ee368df9cb, type: 3}
+  targetLoc: {fileID: 0}
+  connection: {fileID: 0}
+  connectionActiveSeason: 0

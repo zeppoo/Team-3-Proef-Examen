@@ -1,4 +1,3 @@
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -9,111 +8,74 @@ public class PathFinder : MonoBehaviour
 
     private PlayerMovement playerMovement;
 
-    private readonly Queue<Tile> tileQueue = new Queue<Tile>();
-
     private void Start()
     {
         playerMovement = GetComponent<PlayerMovement>();
     }
 
-    private void OnEnable()
-    {
-        SeasonEvents.OnSeasonChanged += OnSeasonChanged;
-    }
-
-    private void OnDisable()
-    {
-        SeasonEvents.OnSeasonChanged -= OnSeasonChanged;
-    }
-
-    private void OnSeasonChanged(SeasonState season)
-    {
-        if (startTile != null && endTile != null)
-        {
-            StartCoroutine(FindPathDelayed());
-        }
-    }
-
-    private IEnumerator FindPathDelayed()
-    {
-        yield return null; 
-        FindPath();
-    }
-
     public void FindPath()
     {
-        tileQueue.Clear();
-        ClearTiles();
-        startTile.visited = true;
-        tileQueue.Enqueue(startTile);
-        
-        bool pathFound = false;
-        
-        while (tileQueue.Count > 0)
+        if (startTile == null || endTile == null) return;
+
+        // Fresh validate so connections reflect current perspective
+        foreach (Tile t in FindObjectsByType<Tile>(FindObjectsSortMode.None))
         {
-            Tile currentTile = tileQueue.Dequeue();
-            if (currentTile.gameObject.GetInstanceID() == endTile.gameObject.GetInstanceID())
+            t.visited = false;
+            t.parent = null;
+            t.ValidateConnections();
+        }
+
+        Queue<Tile> queue = new Queue<Tile>();
+        startTile.visited = true;
+        queue.Enqueue(startTile);
+
+        while (queue.Count > 0)
+        {
+            Tile current = queue.Dequeue();
+
+            if (current == endTile)
             {
-                List<Tile> path = RetracePath(startTile, endTile);
-                playerMovement.SetPath(path);
-                pathFound = true;
+                playerMovement.SetPath(RetracePath(startTile, endTile));
                 return;
             }
-            foreach (GameObject neighbour in currentTile.neighbours)
-            {
-                Tile neighbourTile = neighbour.GetComponent<Tile>();
 
-                if (neighbourTile.isWalkable && !neighbourTile.visited)
+            // Regular neighbours
+            foreach (Tile neighbour in current.neighbours)
+            {
+                if (!neighbour.visited && neighbour.isWalkable)
                 {
-                    neighbourTile.visited = true;
-                    neighbourTile.parent = currentTile;
-                    tileQueue.Enqueue(neighbourTile);
+                    neighbour.visited = true;
+                    neighbour.parent = current;
+                    queue.Enqueue(neighbour);
                 }
             }
 
-            foreach (GameObject neighbour in currentTile.connectionNeighbours)
+            // Connection neighbours (perspective-filtered by ValidateConnections)
+            foreach (Tile neighbour in current.GetValidConnectionNeighbours())
             {
-                Tile neighbourTile = neighbour.GetComponent<Tile>();
-
-                if (neighbourTile.isWalkable && !neighbourTile.visited)
+                if (!neighbour.visited && neighbour.isWalkable)
                 {
-                    neighbourTile.visited = true;
-                    neighbourTile.parent = currentTile;
-                    tileQueue.Enqueue(neighbourTile);
+                    neighbour.visited = true;
+                    neighbour.parent = current;
+                    queue.Enqueue(neighbour);
                 }
             }
         }
-        
-        if (!pathFound)
-        {
-            endTile = null;
-        }
+
+        // No path found
+        endTile = null;
     }
 
-    public void ClearTiles()
-    {
-        Tile[] allTiles = FindObjectsByType<Tile>(FindObjectsSortMode.None);
-        foreach (Tile tile in allTiles)
-        {
-            tile.visited = false;
-            tile.parent = null;
-        }
-    }
-
-    public List<Tile> RetracePath(Tile start, Tile end)
+    private List<Tile> RetracePath(Tile start, Tile end)
     {
         List<Tile> path = new List<Tile>();
-
         Tile current = end;
-
         while (current != null && current != start)
         {
             path.Add(current);
             current = current.parent;
         }
-
         path.Add(start);
-
         path.Reverse();
         return path;
     }

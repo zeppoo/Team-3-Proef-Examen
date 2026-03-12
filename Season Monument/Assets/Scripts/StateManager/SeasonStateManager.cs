@@ -59,7 +59,7 @@ public static class CameraEvents
 {
     public static event Action<CameraController.CameraState> OnPerspectiveChanged;
 
-    internal static void RaisePerspectiveChanged(CameraController.CameraState perspective)
+    public static void RaisePerspectiveChanged(CameraController.CameraState perspective)
     {
         OnPerspectiveChanged?.Invoke(perspective);
     }

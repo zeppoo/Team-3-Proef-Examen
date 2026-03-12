@@ -15,5 +15,5 @@ MonoBehaviour:
   seasonMaterial: {fileID: 2100000, guid: 38c5a6eb617b543d5855379c39e3655d, type: 2}
   springAlbedo: {fileID: 2800000, guid: 19f9915a574684645b7d51806122a68e, type: 3}
   summerAlbedo: {fileID: 2800000, guid: 19f9915a574684645b7d51806122a68e, type: 3}
-  autumnAlbedo: {fileID: 2800000, guid: 6bb1fbde236e91245a81d8b08adcdea1, type: 3}
+  autumnAlbedo: {fileID: 2800000, guid: 6e3f88a776a6fe0458b207175f3a5739, type: 3}
   winterAlbedo: {fileID: 2800000, guid: 6bb1fbde236e91245a81d8b08adcdea1, type: 3}

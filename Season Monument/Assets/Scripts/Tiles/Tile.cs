@@ -1,10 +1,10 @@
-
 using System.Collections.Generic;
 using UnityEngine;
+
 public abstract class Tile : MonoBehaviour
 {
     internal Tile parent;
-    internal List<GameObject> neighbours = new List<GameObject>();
+    internal List<Tile> neighbours = new List<Tile>();
 
     [SerializeField] protected bool _isWalkable = true;
     public virtual bool isWalkable
@@ -12,9 +12,9 @@ public abstract class Tile : MonoBehaviour
         get => _isWalkable;
         set => _isWalkable = value;
     }
+
     protected Material materialInstance;
 
-    [SerializeField] private TileData tileData;
     public List<TileConnection> tileConnections = new List<TileConnection>();
 
     [Header("Mesh Override")]
@@ -25,94 +25,57 @@ public abstract class Tile : MonoBehaviour
     [SerializeField] public bool hasDecoration = false;
     [SerializeField] public GameObject decoration = null;
 
-    internal List<GameObject> connectionNeighbours = new List<GameObject>();
     internal bool visited;
-
 
     public virtual void OnEnable()
     {
         Renderer rend = GetComponent<Renderer>();
-        // Use sharedMaterial in edit mode to avoid leaking material instances
-        if (Application.isPlaying)
-            materialInstance = rend.material;
-        else
-            materialInstance = rend.sharedMaterial;
-
+        materialInstance = Application.isPlaying ? rend.material : rend.sharedMaterial;
 
         SeasonEvents.OnSeasonChanged += OnSeasonChanged;
+        CameraEvents.OnPerspectiveChanged += OnPerspectiveChanged;
     }
 
     public virtual void OnDisable()
     {
         SeasonEvents.OnSeasonChanged -= OnSeasonChanged;
+        CameraEvents.OnPerspectiveChanged -= OnPerspectiveChanged;
     }
 
     public virtual void Start()
     {
-        GridManager.instance.RegisterTile(this);
         FindNeigbour();
-        ApplyTileData();
         ValidateConnections();
         ApplyMeshOverride();
-    }
-
-    public void SetTileData(TileData newData)
-    {
-        tileData = newData;
-        ApplyTileData();
-    }
-
-    protected void ApplyTileData()
-    {
-        if (tileData == null) return;
-
-        materialInstance.color = tileData.tileColor;
     }
 
     public void ApplyMeshOverride()
     {
         if (overrideMesh == null) return;
-
         MeshFilter mf = GetComponent<MeshFilter>();
         if (mf == null) return;
-
         mf.sharedMesh = overrideMesh;
         transform.localEulerAngles = meshRotation;
     }
 
     public virtual void OnSeasonChanged(SeasonState season)
     {
-        if (tileData != null)
-        {
-            ApplyTileData();
-
-            if (tileData.TryGetSeasonOverride(season, out SeasonOverride overrideData))
-            {
-                if (overrideData.overrideColor)
-                    materialInstance.color = overrideData.tileColor;
-            }
-
-            tileData.OnTileSeasonChanged?.Invoke(season);
-        }
-
         ValidateConnections();
     }
 
-    public void TileEntered()
+    private void OnPerspectiveChanged(CameraController.CameraState _)
     {
-        if (tileData != null)
-            tileData.OnTileEntered?.Invoke();
+        ValidateConnections();
     }
 
-    public void TileExited()
-    {
-        if (tileData != null)
-            tileData.OnTileExited?.Invoke();
-    }
-
+    // A connection is valid if:
+    // - both tiles are walkable
+    // - this connection allows the current perspective
+    // - the reverse connection (if it exists) also allows the current perspective
     public void ValidateConnections()
     {
         CameraController.CameraState perspective = CameraController.ActivePerspective;
+
         foreach (TileConnection connection in tileConnections)
         {
             if (connection.connectedTile == null)
@@ -121,26 +84,15 @@ public abstract class Tile : MonoBehaviour
                 continue;
             }
 
-            bool wasValid = connection.valid;
+            bool thisAllows = connection.IsActiveForPerspective(perspective);
+
+            TileConnection reverse = connection.connectedTile.GetConnectionTo(this);
+            bool reverseAllows = reverse == null || reverse.IsActiveForPerspective(perspective);
+
             connection.valid = isWalkable
                 && connection.connectedTile.isWalkable
-                && connection.IsActiveForPerspective(perspective);
-
-            if (connection.valid && !wasValid)
-            {
-                if (!connectionNeighbours.Contains(connection.connectedTile.gameObject))
-                    connectionNeighbours.Add(connection.connectedTile.gameObject);
-
-                if (connection.bidirectional && !connection.connectedTile.connectionNeighbours.Contains(gameObject))
-                    connection.connectedTile.connectionNeighbours.Add(gameObject);
-            }
-            else if (!connection.valid && wasValid)
-            {
-                connectionNeighbours.Remove(connection.connectedTile.gameObject);
-
-                if (connection.bidirectional)
-                    connection.connectedTile.connectionNeighbours.Remove(gameObject);
-            }
+                && thisAllows
+                && reverseAllows;
         }
     }
 
@@ -154,40 +106,47 @@ public abstract class Tile : MonoBehaviour
         return null;
     }
 
-     public void FindNeigbour()
-     {
-         Tile[] allTiles = FindObjectsByType<Tile>(FindObjectsSortMode.None);
-         BoxCollider col = gameObject.GetComponent<BoxCollider>();
-         
-         if (col == null)
-         {
-             Debug.LogError($"{gameObject.name} has no BoxCollider! Cannot find neighbors.");
-             return;
-         }
-         
-         float tileSize = col.bounds.size.x;
-    
-         foreach (Tile tile in allTiles)
-         {
-             if (tile == this) continue;
-    
-             Vector3 offset = tile.transform.position - transform.position;
-             Vector3 horizontalOffset = new Vector3(offset.x, 0, offset.z);
-             float horizontalDistance = horizontalOffset.magnitude;
-             float heightDifference = Mathf.Abs(offset.y);
-    
-             if (horizontalDistance <= tileSize * 1.6f && heightDifference <= 2f)
-             {
-                 if (!neighbours.Contains(tile.gameObject))
-                 {
-                     neighbours.Add(tile.gameObject);
-                 }
-             }
-         }
-     }
-    
-   public virtual void ActivateEffect(SeasonState season)
+    // Returns all currently valid connection neighbours
+    public List<Tile> GetValidConnectionNeighbours()
     {
-       
+        List<Tile> result = new List<Tile>();
+        foreach (TileConnection connection in tileConnections)
+        {
+            if (connection.valid)
+                result.Add(connection.connectedTile);
+        }
+        return result;
     }
+
+    public void FindNeigbour()
+    {
+        neighbours.Clear();
+        Tile[] allTiles = FindObjectsByType<Tile>(FindObjectsSortMode.None);
+        BoxCollider col = GetComponent<BoxCollider>();
+
+        if (col == null)
+        {
+            Debug.LogError($"{gameObject.name} has no BoxCollider! Cannot find neighbors.");
+            return;
+        }
+
+        float tileSize = col.bounds.size.x;
+
+        foreach (Tile tile in allTiles)
+        {
+            if (tile == this) continue;
+
+            Vector3 offset = tile.transform.position - transform.position;
+            float dx = Mathf.Abs(offset.x);
+            float dy = Mathf.Abs(offset.y);
+            float dz = Mathf.Abs(offset.z);
+
+            // Axis-aligned only: exactly one of dx/dz is non-zero
+            bool axisAligned = (dx < 0.1f) != (dz < 0.1f);
+            if (axisAligned && dy <= 2f && Mathf.Max(dx, dz) <= tileSize + 0.1f)
+                neighbours.Add(tile);
+        }
+    }
+
+    public virtual void ActivateEffect(SeasonState season) { }
 }

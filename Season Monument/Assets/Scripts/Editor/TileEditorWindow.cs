@@ -386,7 +386,6 @@ public class TileEditorWindow : EditorWindow
 
             if (currentMode == ToolMode.Connect)
             {
-                TileEditor.ConnectionBidirectional = EditorGUILayout.Toggle("Bidirectional", TileEditor.ConnectionBidirectional);
                 if (TileEditor.ConnectionFirstTile != null)
                 {
                     EditorGUILayout.HelpBox($"First tile: {TileEditor.ConnectionFirstTile.gameObject.name}\nClick a second tile to complete.", MessageType.Info);

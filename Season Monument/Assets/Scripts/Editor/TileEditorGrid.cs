@@ -46,7 +46,6 @@ public static partial class TileEditor
         if (mode == TileEditorWindow.ToolMode.Connect)
         {
             HandleConnectMode(e, grid);
-            DrawExistingConnections();
             sceneView.Repaint();
             return;
         }
@@ -54,7 +53,6 @@ public static partial class TileEditor
         if (mode == TileEditorWindow.ToolMode.DeleteConnection)
         {
             HandleDeleteConnectionMode(e);
-            DrawExistingConnections();
             sceneView.Repaint();
             return;
         }
@@ -100,8 +98,6 @@ public static partial class TileEditor
 
     private static void HandleSelectMode(Event e)
     {
-        // Draw connections so they're always visible in select mode
-        DrawExistingConnections();
         DrawSelectedConnectionHighlight();
 
         if (e.type != EventType.MouseDown || e.button != 0) return;

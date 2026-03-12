@@ -6,23 +6,18 @@ using UnityEngine.Events;
 public class TileConnection
 {
     public Tile connectedTile;
-    public bool bidirectional = true;
-    [HideInInspector] public bool valid = false;
 
-    [Header("Perspective")]
-    [Tooltip("The camera perspective from which this connection is visible and walkable. Set to None to allow all perspectives.")]
+    [Tooltip("Which camera perspectives allow this connection. Use All to always allow it.")]
     public PerspectiveFlags activePerspectives = PerspectiveFlags.All;
 
-    [Header("Waypoint")]
-    [Tooltip("Optional waypoint the player passes through when using this connection, to avoid clipping through geometry.")]
-    public Transform waypoint;
+    [HideInInspector] public bool valid = false;
 
-    [Header("Events")]
     public UnityEvent OnConnectionUsed;
 
     public bool IsActiveForPerspective(CameraController.CameraState perspective)
     {
-        return (activePerspectives & (PerspectiveFlags)(1 << (int)perspective)) != 0;
+        PerspectiveFlags flag = (PerspectiveFlags)(1 << (int)perspective);
+        return (activePerspectives & flag) != 0;
     }
 }
 

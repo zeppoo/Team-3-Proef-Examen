@@ -14,6 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AssetVariations
   seasonMaterial: {fileID: 2100000, guid: 29a9b935763071fcaa3ecdc36fd2948e, type: 2}
   springAlbedo: {fileID: 2800000, guid: 69cd6f478053e6144bdf1c1db91ca136, type: 3}
-  summerAlbedo: {fileID: 2800000, guid: 69cd6f478053e6144bdf1c1db91ca136, type: 3}
-  autumnAlbedo: {fileID: 2800000, guid: 7f3ac1bc9b8abf643b379c9357ffd815, type: 3}
+  summerAlbedo: {fileID: 2800000, guid: f28864acab91ea34db76d2d019565671, type: 3}
+  autumnAlbedo: {fileID: 2800000, guid: 9edf55f6ea06d3a4abaf86169f3f0531, type: 3}
   winterAlbedo: {fileID: 2800000, guid: 7f3ac1bc9b8abf643b379c9357ffd815, type: 3}
