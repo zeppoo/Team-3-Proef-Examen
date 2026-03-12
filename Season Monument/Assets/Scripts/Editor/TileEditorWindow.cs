@@ -3,7 +3,7 @@ using UnityEditor;
 
 public class TileEditorWindow : EditorWindow
 {
-    public enum TileType { Grass, Path, Rock, Water, Empty }
+    public enum TileType { Grass, Path, Rock, Water, Empty, Seed }
     public enum ToolMode { Select, Place, Delete, Connect, DeleteConnection }
     public enum PlacementMode { Grid, Free }
 
@@ -17,6 +17,7 @@ public class TileEditorWindow : EditorWindow
     private GameObject rockPrefab;
     private GameObject waterPrefab;
     private GameObject emptyPrefab;
+    private GameObject seedPrefab;
 
     private Grid[] sceneGrids;
     private string[] gridNames;
@@ -86,6 +87,7 @@ public class TileEditorWindow : EditorWindow
         rockPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Tiles/RockTile.prefab");
         waterPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Tiles/WaterTile.prefab");
         emptyPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Tiles/EmptyTile.prefab");
+        seedPrefab = AssetDatabase.LoadAssetAtPath<GameObject>("Assets/Prefabs/Tiles/SeedTile.prefab");
     }
 
     private void RefreshGrids()
@@ -623,6 +625,7 @@ public class TileEditorWindow : EditorWindow
             TileType.Rock => rockPrefab,
             TileType.Water => waterPrefab,
             TileType.Empty => emptyPrefab,
+            TileType.Seed => seedPrefab,
             _ => grassPrefab
         };
     }

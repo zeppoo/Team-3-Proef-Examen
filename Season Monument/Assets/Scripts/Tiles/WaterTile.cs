@@ -18,6 +18,16 @@ public class WaterTile : Tile
 
     public void OnWinterStarted() { }
 
+    public override void OnSeasonChanged(SeasonState season)
+    {
+        if (season != SeasonState.Winter)
+        {
+            isWalkable = false;
+            materialInstance.SetFloat(iceTransID, 0f);
+        }
+        base.OnSeasonChanged(season);
+    }
+
     public override void Start()
     {
         base.Start();
@@ -28,13 +38,11 @@ public class WaterTile : Tile
     {
         if (season == SeasonState.Winter)
         {
-            materialInstance.color = Color.white;
             isWalkable = true;
             materialInstance.SetFloat(iceTransID, 1f);
         }
         else if (season == SeasonState.Summer)
         {
-            materialInstance.color = Color.blue;
             isWalkable = false;
             materialInstance.SetFloat(iceTransID, 0f);
         }
