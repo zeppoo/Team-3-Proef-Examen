@@ -1,6 +1,6 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &7537850707070034084
+--- !u!1 &3761154068718045125
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -8,49 +8,46 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 323911146365217881}
-  - component: {fileID: 528206250661528455}
-  - component: {fileID: 2361345971967626819}
-  - component: {fileID: 2999139034939368896}
-  - component: {fileID: -1293656160529878002}
-  - component: {fileID: 2841999165276824801}
-  m_Layer: 6
-  m_Name: SeedTile
-  m_TagString: Tile
+  - component: {fileID: 1620863749632544239}
+  - component: {fileID: 4349998695539109605}
+  - component: {fileID: 5199727093151547490}
+  m_Layer: 0
+  m_Name: Quad
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &323911146365217881
+--- !u!4 &1620863749632544239
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7537850707070034084}
+  m_GameObject: {fileID: 3761154068718045125}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.38353, y: 5.76058, z: -5.37}
+  m_LocalPosition: {x: 0, y: 0.3, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
+  m_ConstrainProportionsScale: 1
   m_Children: []
-  m_Father: {fileID: 0}
+  m_Father: {fileID: 4401403518073223759}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!33 &528206250661528455
+--- !u!33 &4349998695539109605
 MeshFilter:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7537850707070034084}
-  m_Mesh: {fileID: -2432090755550338912, guid: 04fc49a8dc8fcf24bba3efa8e8379f89, type: 3}
---- !u!23 &2361345971967626819
+  m_GameObject: {fileID: 3761154068718045125}
+  m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!23 &5199727093151547490
 MeshRenderer:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7537850707070034084}
+  m_GameObject: {fileID: 3761154068718045125}
   m_Enabled: 1
   m_CastShadows: 1
   m_ReceiveShadows: 1
@@ -69,7 +66,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 348ed9136a02f8f67825d1e4652f19c9, type: 2}
+  - {fileID: 2100000, guid: b6453d6d4b47c92cfa8ac8d974cc8e84, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -92,65 +89,49 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &2999139034939368896
-BoxCollider:
+--- !u!1 &6484461887410464689
+GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7537850707070034084}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!114 &-1293656160529878002
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 4401403518073223759}
+  - component: {fileID: 5811659409826453291}
+  m_Layer: 0
+  m_Name: Sapling_Decoration
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &4401403518073223759
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6484461887410464689}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 1
+  m_Children:
+  - {fileID: 1620863749632544239}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &5811659409826453291
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7537850707070034084}
+  m_GameObject: {fileID: 6484461887410464689}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 84b6ee8a7b9da434fae9d634eb5d217e, type: 3}
+  m_Script: {fileID: 11500000, guid: aed50c9d75616a9fe89a2a87306f8b1a, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SeedTile
-  _isWalkable: 1
-  tileConnections:
-  - connectedTile: {fileID: 0}
-    activePerspectives: 15
-    valid: 1
-    OnConnectionUsed:
-      m_PersistentCalls:
-        m_Calls: []
-  overrideMesh: {fileID: 0}
-  meshRotation: {x: 0, y: 0, z: 0}
-  hasDecoration: 0
-  decoration: {fileID: 6484461887410464689, guid: c4aea3e249e3b31d892644f9c305a875, type: 3}
-  tree: {fileID: 4204812839474018465, guid: 3d324d11043525245814b0ee368df9cb, type: 3}
-  targetLoc: {fileID: 0}
-  connection: {fileID: 0}
-  connectionActiveSeason: 0
---- !u!114 &2841999165276824801
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7537850707070034084}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e5862d46268982aa08280aea55826d0e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SeasonTextureApplier
-  assetVariations: {fileID: 11400000, guid: cee3ea5e7024de940ba08cda073715df, type: 2}
+  m_EditorClassIdentifier: Assembly-CSharp::DecorationController
+  assetVariations: {fileID: 11400000, guid: 3f4c7e120d53d593c967d56e1d4d5fc8, type: 2}
