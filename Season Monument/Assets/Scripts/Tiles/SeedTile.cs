@@ -7,6 +7,7 @@ public class SeedTile : Tile
     [SerializeField] private GameObject targetLoc;
     [SerializeField] private GameObject connection;
     [SerializeField] private SeasonState connectionActiveSeason;
+    [SerializeField] private GameObject treeDecorationPrefab;
     private TreeTile treeTile;
 
     public override void ActivateEffect(SeasonState season)
@@ -14,14 +15,13 @@ public class SeedTile : Tile
         Debug.Log(season);
         if (season == SeasonState.Spring)
         {
-            GameObject treeObj = Instantiate(tree, new Vector3(transform.position.x, transform.position.y + 1f, transform.position.z), Quaternion.identity);
-            treeTile = treeObj.GetComponent<TreeTile>();
-            treeTile.SetTargetLoc(targetLoc);
-            treeTile.SetConnection(connection);
-            treeTile.SetConnectionSeason(connectionActiveSeason);
+            if (treeDecorationPrefab != null && decoration == null)
+            {
+                decoration = Instantiate(treeDecorationPrefab, transform.position, Quaternion.identity, transform);
+                hasDecoration = true;
+            }
 
             StartCoroutine(RebuildNeighborsNextFrame());
-            
         }
         base.ActivateEffect(season);
     }
