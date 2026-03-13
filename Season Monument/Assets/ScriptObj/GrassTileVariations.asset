@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d23169016357e3f57b38dd918884a434, type: 3}
+  m_Name: GrassTileVariations
+  m_EditorClassIdentifier: Assembly-CSharp::AssetVariations
+  seasonMaterial: {fileID: 2100000, guid: 348ed9136a02f8f67825d1e4652f19c9, type: 2}
+  springAlbedo: {fileID: 2800000, guid: 6a77142e0c0f05c44b601bcbce936216, type: 3}
+  summerAlbedo: {fileID: 2800000, guid: 3c4445ef20526824b847835153d623ea, type: 3}
+  autumnAlbedo: {fileID: 2800000, guid: 7037d214ea720094ebd962f736bff5f7, type: 3}
+  winterAlbedo: {fileID: 2800000, guid: 08fb14bc41724e347bcf5586d3bf9470, type: 3}

@@ -1,0 +1,35 @@
+{
+    "version": 1,
+    "name": "Movement",
+    "maps": [
+        {
+            "name": "Movement",
+            "id": "e493e22c-81d3-4d7a-b5d4-7bd91bddcf51",
+            "actions": [
+                {
+                    "name": "Point",
+                    "type": "Button",
+                    "id": "a6810a55-c962-4ee1-966d-1ac519b7f332",
+                    "expectedControlType": "",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "f9028a9f-f55b-46fd-8b1b-1838ca32d136",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Point",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}

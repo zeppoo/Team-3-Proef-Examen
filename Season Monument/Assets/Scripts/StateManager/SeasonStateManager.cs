@@ -1,0 +1,103 @@
+using System;
+using UnityEngine;
+
+public enum SeasonState
+{
+    Spring,
+    Summer,
+    Autumn,
+    Winter
+}
+
+public class SeasonStateManager : MonoBehaviour
+{
+    [SerializeField] public SeasonState currentSeason;
+
+    public void SetSeason(SeasonState newSeason)
+    {
+        currentSeason = newSeason;
+       // Debug.Log("Season changed to: " + currentSeason);
+        SeasonEvents.RaiseSeasonChanged(currentSeason);
+
+        switch (currentSeason)
+        {
+            case SeasonState.Spring:
+                SeasonEvents.RaiseSpringStarted();
+                break;
+            case SeasonState.Summer:
+                SeasonEvents.RaiseSummerStarted();
+                break;
+            case SeasonState.Autumn:
+                SeasonEvents.RaiseAutumnStarted();
+                break;
+            case SeasonState.Winter:
+                SeasonEvents.RaiseWinterStarted();
+                break;
+        }
+    }
+
+ 
+    public void NextSeason()
+    {
+        currentSeason = (SeasonState)(((int)currentSeason + 1) % 4);
+        SetSeason(currentSeason);
+    }
+
+    public void PreviousSeason()
+    {
+        currentSeason = (SeasonState)(((int)currentSeason + 3) % 4);
+        SetSeason(currentSeason);
+    }
+
+    void Start()
+    {
+        SetSeason(currentSeason);
+    }
+}
+
+public static class CameraEvents
+{
+    public static event Action<CameraController.CameraState> OnPerspectiveChanged;
+
+    public static void RaisePerspectiveChanged(CameraController.CameraState perspective)
+    {
+        OnPerspectiveChanged?.Invoke(perspective);
+    }
+}
+
+public static class SeasonEvents
+{
+    public static event Action<SeasonState> OnSeasonChanged;
+    
+    public static event Action OnSpringStarted;
+    public static event Action OnSummerStarted;
+    public static event Action OnAutumnStarted;
+    public static event Action OnWinterStarted;
+
+    internal static void RaiseSeasonChanged(SeasonState newSeason)
+    {
+        OnSeasonChanged?.Invoke(newSeason);
+    }
+
+    internal static void RaiseSpringStarted()
+    {
+        OnSpringStarted?.Invoke();
+    }
+
+    internal static void RaiseSummerStarted()
+    {
+        OnSummerStarted?.Invoke();
+    }
+
+    internal static void RaiseAutumnStarted()
+    {
+        OnAutumnStarted?.Invoke();
+
+        
+    }
+
+    internal static void RaiseWinterStarted()
+    {
+        OnWinterStarted?.Invoke();
+    }
+}

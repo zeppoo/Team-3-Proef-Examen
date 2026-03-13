@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9816f8d1ca70bde2bacbd9b671ce79d4, type: 3}
+  m_Name: TowerSeasonVariations
+  m_EditorClassIdentifier: Assembly-CSharp::TowerSeasonVariations
+  spring:
+    model: {fileID: -2432090755550338912, guid: 5194428840178184ab9f3bef619be4e1, type: 3}
+    material: {fileID: 2100000, guid: afdc4a92b88d26045a30137bed9d834a, type: 2}
+  summer:
+    model: {fileID: -2432090755550338912, guid: 8d0b2708f26e64245aba2260eb4f7e8b, type: 3}
+    material: {fileID: 2100000, guid: def18f78a22c708479f944e9c29d6635, type: 2}
+  autumn:
+    model: {fileID: -2432090755550338912, guid: b054c515cfbf60d4dadc719f42459e95, type: 3}
+    material: {fileID: 2100000, guid: 8da843adf4effe540bf412b21c77cedc, type: 2}
+  winter:
+    model: {fileID: -2432090755550338912, guid: 7f4da2089aeb09846ba5e861126e61bb, type: 3}
+    material: {fileID: 2100000, guid: 2988707463cfcd846bb700be29fa2f28, type: 2}
