@@ -10,7 +10,6 @@ public class CameraController : MonoBehaviour
     public enum CameraState { NorthEast, SouthEast, SouthWest, NorthWest }
 
     [Header("Dependencies")]
-    [SerializeField] private SeasonStateManager seasonStateManager;
     [SerializeField] private Transform target;
     private WorldStateSwitch worldStateSwitcher;
 
@@ -110,7 +109,6 @@ public class CameraController : MonoBehaviour
             ActivePerspective = (CameraState)currentState;
             lockedHeightY = heightTarget != null ? heightTarget.position.y : lockedHeightY;
             CameraEvents.RaisePerspectiveChanged(ActivePerspective);
-            if (seasonStateManager) seasonStateManager.NextSeason();
         }
         else if (Keyboard.current.leftArrowKey.wasPressedThisFrame)
         {
@@ -119,7 +117,6 @@ public class CameraController : MonoBehaviour
             ActivePerspective = (CameraState)currentState;
             lockedHeightY = heightTarget != null ? heightTarget.position.y : lockedHeightY;
             CameraEvents.RaisePerspectiveChanged(ActivePerspective);
-            if (seasonStateManager) seasonStateManager.PreviousSeason();
         }
     }
 
@@ -167,7 +164,6 @@ public class CameraController : MonoBehaviour
             ActivePerspective = (CameraState)currentState;
             lockedHeightY = heightTarget != null ? heightTarget.position.y : lockedHeightY;
             CameraEvents.RaisePerspectiveChanged(ActivePerspective);
-            if (seasonStateManager) seasonStateManager.NextSeason();
         }
         else
         {
@@ -176,7 +172,6 @@ public class CameraController : MonoBehaviour
             ActivePerspective = (CameraState)currentState;
             lockedHeightY = heightTarget != null ? heightTarget.position.y : lockedHeightY;
             CameraEvents.RaisePerspectiveChanged(ActivePerspective);
-            if (seasonStateManager) seasonStateManager.PreviousSeason();
         }
     }
 

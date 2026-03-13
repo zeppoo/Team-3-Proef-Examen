@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: SkyboxMat
+  m_Name: SkyboxFall
   m_Shader: {fileID: -6465566751694194690, guid: 579089349c61f694481048c68d639b48, type: 3}
   m_Parent: {fileID: 0}
   m_ModifiedSerializedProperties: 0
@@ -38,14 +38,14 @@ Material:
         m_Offset: {x: 0, y: 0}
     m_Ints: []
     m_Floats:
-    - _NadirBlendPower: 1
+    - _NadirBlendPower: 1.46
     - _QueueControl: 0
     - _QueueOffset: 0
-    - _zenithBlendPower: 1
+    - _zenithBlendPower: 0.72
     m_Colors:
-    - _HorizonColor: {r: 0.5294118, g: 0.8078432, b: 0.9803922, a: 1}
-    - _NadirColor: {r: 0.5764706, g: 0.4392157, b: 0.8588236, a: 1}
-    - _zentihColor: {r: 0.1960784, g: 0.8039216, b: 0.1960784, a: 1}
+    - _HorizonColor: {r: 0.09675328, g: 0.17788385, b: 0.4037736, a: 1}
+    - _NadirColor: {r: 0.6981132, g: 0.15200852, b: 0, a: 1}
+    - _zentihColor: {r: 0, g: 0.05882353, b: 0.4862745, a: 1}
   m_BuildTextureStacks: []
   m_AllowLocking: 1
 --- !u!114 &6422459510841381023
